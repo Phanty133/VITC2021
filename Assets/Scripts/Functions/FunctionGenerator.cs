@@ -5,11 +5,11 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class FunctionGenerator
+public static class FunctionGenerator
 {
-	public Dictionary<string, Type> funcTypes = new Dictionary<string, Type>();
+	public static Dictionary<string, Type> funcTypes = new Dictionary<string, Type>();
 
-	private void LoadFunctions() {
+	private static void LoadFunctions() {
 		Type generalType = typeof(Function);
 		Type[] types = Assembly.GetAssembly(generalType).GetTypes();
 		Type[] inheritingTypes = types.Where(t => t.IsSubclassOf(generalType)).ToArray();
@@ -20,11 +20,11 @@ public class FunctionGenerator
 		}
 	}
 
-	public FunctionGenerator() {
-		LoadFunctions();
-	}
+	public static Function Generate(int maxDepth = 2, int curDepth = 0) {
+		if (funcTypes.Count == 0) {
+			LoadFunctions();
+		}
 
-	public Function Generate(int maxDepth = 3, int curDepth = 0) {
 		Type funcType = funcTypes.ElementAt(UnityEngine.Random.Range(0, funcTypes.Count)).Value;
 		Function func = (Function)Activator.CreateInstance(funcType);
 
@@ -37,7 +37,7 @@ public class FunctionGenerator
 				}
 			} else {
 				for (int i = 0; i < func.paramCount; i++) {
-					func.children.Add(Generate(maxDepth, curDepth + 1));
+					func.children.Add(FunctionGenerator.Generate(maxDepth, curDepth + 1));
 				}
 			}
 		}

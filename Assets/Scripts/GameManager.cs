@@ -6,6 +6,6 @@ public class GameManager : MonoBehaviour
 {
 	void Start()
 	{
-		FunctionGenerator funcGen = new FunctionGenerator();
+		// FunctionGenerator funcGen = new FunctionGenerator();
 	}
 }
