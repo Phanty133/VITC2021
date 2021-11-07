@@ -46,17 +46,18 @@ public class ProjMovement : MonoBehaviour
 		moveLUT = new LUT(moveFunction, new Vector2(-levelWidth * 1.1f, levelWidth * 1.1f));
 		// Debug.Log(moveFunction.GetNotation());
 
-		if (randomColor) {
-			color = new Color(Random.Range(0f, 1f), Random.Range(0f, 1f), Random.Range(0f, 1f), 1f);
+		if (randomColor)
+		{
+			color = new Color(Random.Range(0.5f, 1f), Random.Range(0.5f, 1f), Random.Range(0.5f, 1f), 1f);
 		}
 
 		GetComponent<SpriteRenderer>().color = color;
-		
-		Material m = new Material(GetComponent<TrailRenderer>().materials[0]);
+
+		Material m = new Material(GetComponent<SpriteRenderer>().material);
 		GetComponent<SpriteRenderer>().material = m;
 		GetComponent<SpriteRenderer>().material.SetColor("_BaseColor", color);
-		GetComponent<TrailRenderer>().materials[0] = m;
-		GetComponent<TrailRenderer>().materials[0].SetColor("_BaseColor", color);
+		// GetComponent<TrailRenderer>().materials[0] = m;
+		// GetComponent<TrailRenderer>().materials[0].SetColor("_BaseColor", color);
 
 		graphComp = GetComponent<Graph>();
 		graphComp.m_LUT = moveLUT;
@@ -72,7 +73,9 @@ public class ProjMovement : MonoBehaviour
 		if (transform.position.x * direction < levelWidth)
 		{
 			transform.position = NextPos(speed * Time.deltaTime * direction);
-		} else {
+		}
+		else
+		{
 			Destroy(gameObject);
 		}
 	}
