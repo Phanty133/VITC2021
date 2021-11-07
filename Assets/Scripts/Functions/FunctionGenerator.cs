@@ -20,7 +20,7 @@ public static class FunctionGenerator
 		}
 	}
 
-	public static Function Generate(int maxDepth = 2, int curDepth = 0) {
+	public static Function Generate(int maxDepth = 3, int curDepth = 0) {
 		if (funcTypes.Count == 0) {
 			LoadFunctions();
 		}
