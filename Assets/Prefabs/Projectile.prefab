@@ -10,8 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 4469581911555864111}
   - component: {fileID: 4469581911555864110}
-  - component: {fileID: 4469581911555864105}
   - component: {fileID: 3549847529546470623}
+  - component: {fileID: 4469581911555864105}
+  - component: {fileID: 5751123864413659086}
   m_Layer: 0
   m_Name: Projectile
   m_TagString: Projectile
@@ -84,21 +85,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &4469581911555864105
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4469581911555864104}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: deddb8a18e285dd43be7873ede0f6e9a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  speed: 2
-  direction: 1
-  graphPrefab: {fileID: 6736466631683455968, guid: b2dc7dc5fff68374ca8ab8397318100c, type: 3}
 --- !u!58 &3549847529546470623
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -115,3 +101,32 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.5
+--- !u!114 &4469581911555864105
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4469581911555864104}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: deddb8a18e285dd43be7873ede0f6e9a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 2
+  direction: 1
+  graphPrefab: {fileID: 6736466631683455968, guid: b2dc7dc5fff68374ca8ab8397318100c, type: 3}
+--- !u!114 &5751123864413659086
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4469581911555864104}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 97d8fe030d8d24249aa5d1fed3a7134f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_color: {r: 0, g: 0, b: 0, a: 0}
+  pixelsPerUnit: 0

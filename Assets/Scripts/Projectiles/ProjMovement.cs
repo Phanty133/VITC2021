@@ -6,12 +6,12 @@ public class ProjMovement : MonoBehaviour
 {
 	public float speed = 1f;
 	public int direction = 1;
-	public GameObject graphPrefab;
+	public Color color;
+	public bool randomColor = true;
 
 	Function moveFunction;
 	LUT moveLUT;
 	float levelWidth;
-	GameObject graphObj;
 	Graph graphComp;
 
 	private Vector2 NextPos(float xDist) {
@@ -39,15 +39,14 @@ public class ProjMovement : MonoBehaviour
 		moveLUT = new LUT(moveFunction, new Vector2(-levelWidth * 1.1f, levelWidth * 1.1f));
 		// Debug.Log(moveFunction.GetNotation());
 
-		Color color = new Color(Random.Range(0f, 1f), Random.Range(0f, 1f), Random.Range(0f, 1f), 1f);
+		if (randomColor) {
+			color = new Color(Random.Range(0f, 1f), Random.Range(0f, 1f), Random.Range(0f, 1f), 1f);
+		}
 
 		GetComponent<SpriteRenderer>().color = color;
-
-		graphObj = Instantiate(graphPrefab, new Vector2(0, 0), new Quaternion());
-		graphComp = graphObj.GetComponent<Graph>();
+		graphComp = GetComponent<Graph>();
 		graphComp.m_LUT = moveLUT;
 		graphComp.m_color = color;
-		graphComp.InitGraph();
 		// graphComp.TraceGraph();
 
 		levelWidth = Camera.main.orthographicSize * Camera.main.aspect;
@@ -58,7 +57,6 @@ public class ProjMovement : MonoBehaviour
 		if (transform.position.x * direction < levelWidth) {
 			transform.position = NextPos(speed * Time.deltaTime * direction);
 		} else {
-			Destroy(graphObj);
 			Destroy(gameObject);
 		}
 	}
