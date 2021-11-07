@@ -4,6 +4,12 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
+	private void OnTriggerEnter2D(Collider2D other) {
+		if (other.tag == "Projectile") {
+			Destroy(gameObject);
+		}
+	}
+
 	// Start is called before the first frame update
 	void Start()
 	{

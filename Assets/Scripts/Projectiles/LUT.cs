@@ -10,11 +10,15 @@ public class LUT
 
 	Dictionary<float, float> m_table = new Dictionary<float, float>();
 
-	public LUT(Function f, Vector2 range, float precision = 0.1f) {
+	public LUT(Function f, Vector2 range, float precision = 0.25f) {
 		m_func = f;
 		m_precision = precision;
 		m_range = range;
 		Generate();
+	}
+
+	public void ProcessTask(float x) {
+		m_table[x] = m_func.Process(x);
 	}
 
 	public void Generate() {
