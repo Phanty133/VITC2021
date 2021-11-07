@@ -278,7 +278,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c9f5704bac8072643b7a7abc99c9f40f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  projPrefab: {fileID: 4469581911555864104, guid: 127ac891e89040243a0cc24e358d6a22, type: 3}
+  projPrefab: {fileID: 1798843495967457434, guid: 127ac891e89040243a0cc24e358d6a22, type: 3}
   spawnRate: 0.2
   baseSpeed: 3
   randomSpeed: 1
@@ -680,11 +680,8 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 1019762533}
-  - component: {fileID: 1019762532}
-  - component: {fileID: 1019762531}
-  - component: {fileID: 1019762534}
   - component: {fileID: 890779341}
+  - component: {fileID: 1019762534}
   - component: {fileID: 890779340}
   m_Layer: 0
   m_Name: GameManager
@@ -726,7 +723,7 @@ TrailRenderer:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1019762530}
+  m_GameObject: {fileID: 890779339}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
