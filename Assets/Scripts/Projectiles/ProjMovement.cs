@@ -62,8 +62,7 @@ public class ProjMovement : MonoBehaviour
 		// GetComponent<TrailRenderer>().materials[0].SetColor("_BaseColor", color);
 
 		graphComp = GetComponent<Graph>();
-		graphComp.m_LUT = moveLUT;
-		graphComp.m_color = color;
+		graphComp.SetGraph(moveLUT, color);
 		// graphComp.TraceGraph();
 
 		levelWidth = Camera.main.orthographicSize * Camera.main.aspect;

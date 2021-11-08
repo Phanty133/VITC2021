@@ -39,7 +39,7 @@ public static class FunctionGenerator
 		return output;
 	}
 
-	public static Function Generate(int tier = 100, int maxDepth = 3, int curDepth = 0) {
+	public static Function Generate(int tier = 100, int maxDepth = 2, int curDepth = 0) {
 		if (funcTypes.Count == 0) {
 			LoadFunctions();
 		}

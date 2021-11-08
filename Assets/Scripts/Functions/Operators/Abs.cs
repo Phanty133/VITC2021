@@ -13,7 +13,7 @@ public class Abs : Function
 	}
 
 	public override int tier {
-		get { return 0; }
+		get { return 1; }
 	}
 
 	public override int paramCount {

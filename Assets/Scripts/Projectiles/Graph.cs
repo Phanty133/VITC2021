@@ -10,6 +10,7 @@ public class Graph : MonoBehaviour
 	public Color m_color;
 	private GraphSurface graphSurface;
 	public Guid guid;
+	private FuncPanel funcPanel;
 
 	public void DrawGraphPoint(float unitX, float? preY = null) {
 		float unitY;
@@ -26,5 +27,16 @@ public class Graph : MonoBehaviour
 	private void Awake() {
 		guid = Guid.NewGuid();
 		graphSurface = GameObject.FindGameObjectWithTag("GraphSurface").GetComponent<GraphSurface>();
+		funcPanel = GameObject.FindGameObjectWithTag("FuncPanel").GetComponent<FuncPanel>();
+	}
+
+	public void SetGraph(LUT lut, Color color) {
+		m_LUT = lut;
+		m_color = color;
+		funcPanel.AddFunction(guid, m_LUT.m_func, m_color);
+	}
+
+	private void OnDestroy() {
+		funcPanel.RemoveFunction(guid);
 	}
 }
