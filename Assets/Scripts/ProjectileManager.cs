@@ -5,6 +5,7 @@ using UnityEngine;
 public class ProjectileManager : MonoBehaviour
 {
 	public GameObject projPrefab;
+	public int tier = 3;
 	public float spawnRate = 1; // Projectiles per second
 	public float baseSpeed = 1f;
 	public bool randomSpeed = true;
@@ -17,6 +18,8 @@ public class ProjectileManager : MonoBehaviour
 	private void SpawnProjectile() {
 		GameObject proj = Instantiate(projPrefab, new Vector2(0, Camera.main.orthographicSize * 2), new Quaternion(), projContainer.transform);
 		ProjMovement projMovement = proj.GetComponent<ProjMovement>();
+
+		projMovement.tier = tier;
 
 		if (randomSpeed) {
 			projMovement.speed = baseSpeed + Random.Range(-randomSpeedOffset, randomSpeedOffset);

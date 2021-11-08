@@ -8,6 +8,8 @@ public class ProjMovement : MonoBehaviour
 	public int direction = 1;
 	public Color color;
 	public bool randomColor = true;
+	[HideInInspector]
+	public int tier;
 
 	Function moveFunction;
 	LUT moveLUT;
@@ -42,7 +44,7 @@ public class ProjMovement : MonoBehaviour
 	{
 		direction = Random.Range(0, 2) == 0 ? -1 : 1;
 
-		moveFunction = FunctionGenerator.Generate(1);
+		moveFunction = FunctionGenerator.Generate(tier);
 		moveLUT = new LUT(moveFunction, new Vector2(-levelWidth * 1.1f, levelWidth * 1.1f));
 		// Debug.Log(moveFunction.GetNotation());
 

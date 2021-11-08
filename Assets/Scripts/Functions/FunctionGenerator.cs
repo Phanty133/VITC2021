@@ -8,6 +8,7 @@ using UnityEngine;
 public static class FunctionGenerator
 {
 	public static Dictionary<string, Type> funcTypes = new Dictionary<string, Type>();
+	public static Dictionary<int, List<string>> funcTiers = new Dictionary<int, List<string>>();
 
 	private static void LoadFunctions() {
 		Type generalType = typeof(Function);
@@ -17,15 +18,35 @@ public static class FunctionGenerator
 		foreach (Type type in inheritingTypes) {
 			Function func = (Function) Activator.CreateInstance(type);
 			funcTypes.Add(func.id, type);
+
+			if (!funcTiers.ContainsKey(func.tier)) {
+				funcTiers[func.tier] = new List<string>();
+			}
+
+			funcTiers[func.tier].Add(func.id);
 		}
 	}
 
-	public static Function Generate(int maxDepth = 3, int curDepth = 0) {
+	private static List<string> GetFunctionsInTier(int tier) {
+		List<string> output = new List<string>();
+
+		for (int i = 0; i < tier; i++) {
+			if (funcTiers.ContainsKey(i)) {
+				output.AddRange(funcTiers[i]);
+			}
+		}
+
+		return output;
+	}
+
+	public static Function Generate(int tier = 100, int maxDepth = 3, int curDepth = 0) {
 		if (funcTypes.Count == 0) {
 			LoadFunctions();
 		}
 
-		Type funcType = funcTypes.ElementAt(UnityEngine.Random.Range(0, funcTypes.Count)).Value;
+		List<string> funcsInTier = GetFunctionsInTier(tier);
+		string funcId = funcsInTier.ElementAt(UnityEngine.Random.Range(0, funcsInTier.Count));
+		Type funcType = funcTypes[funcId];
 		Function func = (Function)Activator.CreateInstance(funcType);
 
 		if (func.paramCount != 0) {
@@ -37,7 +58,7 @@ public static class FunctionGenerator
 				}
 			} else {
 				for (int i = 0; i < func.paramCount; i++) {
-					func.children.Add(FunctionGenerator.Generate(maxDepth, curDepth + 1));
+					func.children.Add(FunctionGenerator.Generate(tier, maxDepth, curDepth + 1));
 				}
 			}
 		}
