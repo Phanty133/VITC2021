@@ -55,11 +55,13 @@ public class ProjMovement : MonoBehaviour
 	public void InitProjectile(bool muted = false) {
 		direction = Random.Range(0, 2) == 0 ? -1 : 1;
 
+		surfaceWidth = GameObject.FindGameObjectWithTag("GraphSurface").GetComponent<GraphSurface>().surfaceWidth;
 		moveFunction = FunctionGenerator.Generate(tier);
 		// moveFunction = new Sine();
 		// moveFunction.children.Add(new Unknown());
-		moveLUT = new LUT(moveFunction, new Vector2(-surfaceWidth * 1.1f, surfaceWidth * 1.1f));
+		moveLUT = new LUT(moveFunction, new Vector2(-surfaceWidth * 0.55f, surfaceWidth * 0.55f));
 		// Debug.Log(moveFunction.GetNotation());
+		Debug.Log(moveLUT.EstimateComplexity());
 
 		if (randomColor)
 		{
@@ -78,7 +80,6 @@ public class ProjMovement : MonoBehaviour
 		graphComp.SetGraph(moveLUT, color);
 		// graphComp.TraceGraph();
 
-		surfaceWidth = GameObject.FindGameObjectWithTag("GraphSurface").GetComponent<GraphSurface>().surfaceWidth;
 		transform.position = new Vector2(surfaceWidth * 0.55f * -direction, 0);
 
 		audioGraph = GetComponent<AudioGraph>();
