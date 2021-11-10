@@ -80,8 +80,6 @@ public class LUT
 			float nextKey = RoundToKeyPrecision(x + m_precision);
 			float dif = Mathf.Abs(m_table[nextKey] - m_table[curKey]);
 			difs.Add(dif);
-
-			if (x == m_range.y) break;
 		}
 
 		return difs.Sum() / difs.Count;
