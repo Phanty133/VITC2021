@@ -10,7 +10,7 @@ public class PlayerCollide : MonoBehaviour
 		{
 			Player b;
 			if (other.gameObject.TryGetComponent<Player>(out b)) return;
-			transform.parent.gameObject.GetComponent<Player>().score -= 5;
+			transform.parent.gameObject.GetComponent<Player>().score -= 25;
 			//Destroy(gameObject);
 		}
 	}
