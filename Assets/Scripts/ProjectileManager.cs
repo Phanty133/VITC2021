@@ -14,6 +14,25 @@ public class ProjectileManager : MonoBehaviour
 
 	private float spawnTime;
 	private float spawnTimer;
+	private bool graphMuted = false;
+
+	public void OnListenToGraphToggle() {
+		graphMuted = !graphMuted;
+
+		for (int i = 0; i < projContainer.transform.childCount; i++) {
+			GameObject child = projContainer.transform.GetChild(i).gameObject;
+
+			if (child.GetComponent<AudioGraph>() == null) continue;
+
+			ProjMovement projMovement = child.GetComponent<ProjMovement>();
+
+			if (!graphMuted) {
+				projMovement.UnmuteAudioGraph();
+			} else {
+				projMovement.MuteAudioGraph();
+			}
+		}
+	}
 
 	private void SpawnProjectile() {
 		GameObject proj = Instantiate(projPrefab, new Vector2(0, Camera.main.orthographicSize * 2), new Quaternion(), projContainer.transform);
@@ -26,6 +45,8 @@ public class ProjectileManager : MonoBehaviour
 		} else {
 			projMovement.speed = baseSpeed;
 		}
+
+		projMovement.InitProjectile(graphMuted);
 	}
 
 	private void Start() {

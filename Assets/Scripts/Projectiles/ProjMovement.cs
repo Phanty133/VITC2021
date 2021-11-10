@@ -13,8 +13,10 @@ public class ProjMovement : MonoBehaviour
 
 	Function moveFunction;
 	LUT moveLUT;
-	float levelWidth;
+	float surfaceWidth;
 	Graph graphComp;
+	AudioGraph audioGraph;
+	bool graphMuted = false;
 
 	private Vector2 NextPos(float xDist)
 	{
@@ -24,11 +26,11 @@ public class ProjMovement : MonoBehaviour
 
 		if (float.IsNaN(funcVal))
 		{
-			nextY = levelWidth * 2;
+			nextY = surfaceWidth * 2;
 		}
-		else if (Mathf.Abs(funcVal) > levelWidth)
+		else if (Mathf.Abs(funcVal) > surfaceWidth)
 		{
-			nextY = levelWidth * 1.1f * Mathf.Sign(funcVal);
+			nextY = surfaceWidth * 1.1f * Mathf.Sign(funcVal);
 		}
 		else
 		{
@@ -40,12 +42,23 @@ public class ProjMovement : MonoBehaviour
 		return new Vector2(nextX, nextY);
 	}
 
-	private void Start()
-	{
+	public void UnmuteAudioGraph() {
+		audioGraph.SetVolume(0.3f);
+		graphMuted = false;
+	}
+
+	public void MuteAudioGraph() {
+		audioGraph.SetVolume(0);
+		graphMuted = true;
+	}
+
+	public void InitProjectile(bool muted = false) {
 		direction = Random.Range(0, 2) == 0 ? -1 : 1;
 
 		moveFunction = FunctionGenerator.Generate(tier);
-		moveLUT = new LUT(moveFunction, new Vector2(-levelWidth * 1.1f, levelWidth * 1.1f));
+		// moveFunction = new Sine();
+		// moveFunction.children.Add(new Unknown());
+		moveLUT = new LUT(moveFunction, new Vector2(-surfaceWidth * 1.1f, surfaceWidth * 1.1f));
 		// Debug.Log(moveFunction.GetNotation());
 
 		if (randomColor)
@@ -65,15 +78,22 @@ public class ProjMovement : MonoBehaviour
 		graphComp.SetGraph(moveLUT, color);
 		// graphComp.TraceGraph();
 
-		levelWidth = Camera.main.orthographicSize * Camera.main.aspect;
-		transform.position = new Vector2(levelWidth * 1.1f * -direction, 0);
+		surfaceWidth = GameObject.FindGameObjectWithTag("GraphSurface").GetComponent<GraphSurface>().surfaceWidth;
+		transform.position = new Vector2(surfaceWidth * 0.55f * -direction, 0);
+
+		audioGraph = GetComponent<AudioGraph>();
+		graphMuted = muted;
 	}
 
 	private void Update()
 	{
-		if (transform.position.x * direction < levelWidth)
+		if (transform.position.x * direction < surfaceWidth)
 		{
 			transform.position = NextPos(speed * Time.deltaTime * direction);
+
+			if (Mathf.Abs(transform.position.x) < surfaceWidth / 2f && !audioGraph.playing) {
+				audioGraph.PlayGraph(moveLUT, surfaceWidth / speed, graphMuted);
+			}
 		}
 		else
 		{

@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 1798843495967457433}
   - component: {fileID: 1798843495967457432}
   - component: {fileID: 1798843495967457435}
+  - component: {fileID: 8831184963872496975}
   m_Layer: 0
   m_Name: Projectile
   m_TagString: Projectile
@@ -117,6 +118,7 @@ MonoBehaviour:
   direction: 1
   color: {r: 0, g: 0, b: 0, a: 0}
   randomColor: 1
+  tier: 0
 --- !u!114 &1798843495967457435
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -130,3 +132,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_color: {r: 0, g: 0, b: 0, a: 0}
+--- !u!114 &8831184963872496975
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1798843495967457434}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 37fd152ce666e7340a3e123ac079d23c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  baseFreq: 420
+  freqOffsetPerUnit: 40

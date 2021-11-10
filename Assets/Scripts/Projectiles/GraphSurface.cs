@@ -24,6 +24,7 @@ public class GraphSurface : MonoBehaviour
 	Dictionary<Guid, List<GraphPixel>> graphCoords = new Dictionary<Guid, List<GraphPixel>>();
 	private bool updateTexture = false;
 	private Color[] textureData;
+	public float surfaceWidth = 24f;
 
 	public Vector2Int WorldToSurface(Vector2 worldPos) {
 		return new Vector2Int(
