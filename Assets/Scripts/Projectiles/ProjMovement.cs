@@ -94,6 +94,8 @@ public class ProjMovement : MonoBehaviour
 
 			if (Mathf.Abs(transform.position.x) < surfaceWidth / 2f && !audioGraph.playing) {
 				audioGraph.PlayGraph(moveLUT, surfaceWidth / speed, graphMuted);
+			} else if (audioGraph.playing) {
+				audioGraph.SetPan(transform.position.x / (surfaceWidth / 2f));
 			}
 		}
 		else

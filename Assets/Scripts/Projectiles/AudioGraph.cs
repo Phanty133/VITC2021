@@ -52,7 +52,7 @@ public class AudioGraph : MonoBehaviour
 
 	public void PlayGraph(LUT movelut, float moveTime, bool muted = false) {
 		playing = true;
-		audioSource = gameObject.AddComponent<AudioSource>();
+		audioSource = gameObject.GetComponent<AudioSource>();
 		length = moveTime;
 		lut = movelut;
 		surfaceWidth = GameObject.FindGameObjectWithTag("GraphSurface").GetComponent<GraphSurface>().surfaceWidth;
@@ -61,12 +61,15 @@ public class AudioGraph : MonoBehaviour
 		int freq = Mathf.RoundToInt(baseFreq + offset * freqOffsetPerUnit);
 		AudioClip ac = GenerateClip();
 
-		audioSource.clip = ac;
 		audioSource.volume = muted ? 0 : 0.3f;
-		audioSource.Play();
+		audioSource.PlayOneShot(ac);
 	}
 
 	public void SetVolume(float vol) {
 		audioSource.volume = vol;
+	}
+
+	public void SetPan(float pan) {
+		audioSource.panStereo = pan;
 	}
 }
