@@ -147,7 +147,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   baseFreq: 420
   freqOffsetPerUnit: 40
-  samplerate: 44000
+  samplerate: 8000
   playing: 0
 --- !u!82 &2852195532938326564
 AudioSource:

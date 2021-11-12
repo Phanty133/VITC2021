@@ -614,9 +614,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   projPrefab: {fileID: 1798843495967457434, guid: 127ac891e89040243a0cc24e358d6a22, type: 3}
   tier: 2
-  spawnRate: 0.2
+  spawnRate: 1
   baseSpeed: 3
-  randomSpeed: 0
+  randomSpeed: 1
   randomSpeedOffset: 1
   projContainer: {fileID: 342846835}
 --- !u!1 &537042860
@@ -1412,7 +1412,7 @@ MonoBehaviour:
   m_Antialiasing: 0
   m_AntialiasingQuality: 2
   m_StopNaN: 0
-  m_Dithering: 0
+  m_Dithering: 1
   m_ClearDepth: 1
   m_AllowXRRendering: 1
   m_RequiresDepthTexture: 0
@@ -1677,6 +1677,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fadeTime: 2
+  thickness: 10
   surfaceWidth: 24
 --- !u!4 &1272961783
 Transform:
@@ -1687,7 +1688,7 @@ Transform:
   m_GameObject: {fileID: 1272961781}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 10}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 6

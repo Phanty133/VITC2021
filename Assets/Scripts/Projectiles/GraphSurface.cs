@@ -18,6 +18,7 @@ class GraphPixel {
 public class GraphSurface : MonoBehaviour
 {
 	public float fadeTime = 1f;
+	public int thickness = 5;
 	float pixelsPerUnit;
 	Texture2D texture;
 	Dictionary<Guid, Vector2Int> prevCoords = new Dictionary<Guid, Vector2Int>();
@@ -38,7 +39,18 @@ public class GraphSurface : MonoBehaviour
 		updateTexture = true;
 	}
 
+	private void SetPixelSafe(Guid guid, Vector2Int coords, Color color) {
+		if(!(coords.x > 0 && coords.x < texture.width && coords.y > 0 && coords.y < texture.height)) return;
+		SetPixel(coords, color);
+
+		GraphPixel graphPixel = new GraphPixel(coords, color);
+		graphCoords[guid].Add(graphPixel);
+	}
+
 	private void DrawLine(Guid guid, Texture2D texture, Vector2Int pos0, Vector2Int pos1, Color color) { // An implementation of Bresenham's line algorithm
+		// DrawAALine(guid, texture, pos0, pos1, color);
+		// return;
+		
 		int x = pos0.x;
 		int y = pos0.y;
 		int x1 = pos1.x;
@@ -68,11 +80,10 @@ public class GraphSurface : MonoBehaviour
 
 		for (int i = 0; i <= longest; i++) {
 			if (y != Screen.height && y != 0) {
-				Vector2Int coords = new Vector2Int(x, y);
-				SetPixel(coords, color);
-
-				GraphPixel graphPixel = new GraphPixel(coords, color);
-				graphCoords[guid].Add(graphPixel);
+				for(int c = -(thickness/2); c < thickness/2; c++) {
+					Vector2Int coords = new Vector2Int(x, y + c);
+					SetPixelSafe(guid, coords, color);
+				}
 			}
 
 			numerator += shortest;
@@ -84,6 +95,89 @@ public class GraphSurface : MonoBehaviour
 			} else {
 				x += dx2 ;
 				y += dy2 ;
+			}
+		}
+	}
+
+	private Vector2Int SwapVect(Vector2Int v) {
+		int x = v.x;
+		v.x = v.y;
+		v.y = x;
+		return v;
+	}
+
+	private float FractionPart(float a) {
+		if(a > 0) return a - Mathf.Floor(a);
+		return 1 - (a - Mathf.Floor(a));
+	} 
+
+	private int SuperFloor(float a) {
+		return (int) Mathf.Floor(a);
+	}
+
+	private void DrawAALine(Guid guid, Texture2D texture, Vector2Int pos0, Vector2Int pos1, Color color) { // Fuck you, Bresenham
+		bool steep = Mathf.Abs(pos1.y - pos0.y) > Mathf.Abs(pos1.x - pos0.x);
+
+		if(steep) {
+			pos0 = SwapVect(pos0);
+			pos1 = SwapVect(pos1);
+		}
+		if(pos0.x > pos1.x) {
+			int t = pos0.y;
+			pos0.y = pos1.y;
+			pos1.y = t;
+			t = pos0.x;
+			pos0.x = pos1.x;
+			pos1.x = t;
+		}
+
+		float dx = pos1.x - pos0.x;
+		float dy = pos1.y - pos0.y;
+		float gradient = dy/dx;
+		if(dx == 0) gradient = 1;
+
+		int xpxl1 = pos0.x;
+		int xpxl2 = pos1.x;
+		float intersectY = pos0.y;
+		// Debug.Log(gradient);
+
+		if(steep) {
+			for(int x = xpxl1; x <= xpxl2; x++) {
+				Color c = color;
+				c.a = 1 - FractionPart(intersectY);
+				Vector2Int p = new Vector2Int(SuperFloor(intersectY), x);
+				if(p.x > 0 && p.x < texture.width && p.y > 0 && p.y < texture.height) {
+					SetPixel(p, c);
+					GraphPixel graphPixel = new GraphPixel(p, c);
+					graphCoords[guid].Add(graphPixel);
+				}
+				c.a = FractionPart(intersectY);
+				p = new Vector2Int(SuperFloor(intersectY) - 1, x);
+				if(p.x > 0 && p.x < texture.width && p.y > 0 && p.y < texture.height) {
+					SetPixel(p, c);
+					GraphPixel graphPixel = new GraphPixel(p, c);
+					graphCoords[guid].Add(graphPixel);
+				}
+				intersectY += gradient;
+			}
+		} else {
+			for(int x = xpxl1; x <= xpxl2; x++) {
+				Color c = color;
+				c.a = 1 - FractionPart(intersectY);
+				Vector2Int p = new Vector2Int(x, SuperFloor(intersectY));
+				if(p.x > 0 && p.x < texture.width && p.y > 0 && p.y < texture.height) {
+					SetPixel(p, c);
+					GraphPixel graphPixel = new GraphPixel(p, c);
+					graphCoords[guid].Add(graphPixel);
+				}
+				c.a = FractionPart(intersectY);
+				p = new Vector2Int(x, SuperFloor(intersectY) - 1);
+				if(p.x > 0 && p.x < texture.width && p.y > 0 && p.y < texture.height) {
+					SetPixel(p, c);
+					GraphPixel graphPixel = new GraphPixel(p, c);
+					graphCoords[guid].Add(graphPixel);
+				}
+				intersectY += gradient;
 			}
 		}
 	}
