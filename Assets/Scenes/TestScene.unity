@@ -614,7 +614,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   projPrefab: {fileID: 1798843495967457434, guid: 127ac891e89040243a0cc24e358d6a22, type: 3}
   tier: 2
-  spawnRate: 0.2
+  spawnRate: 2
   baseSpeed: 3
   randomSpeed: 0
   randomSpeedOffset: 1
