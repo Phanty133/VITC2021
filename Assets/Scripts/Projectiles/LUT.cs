@@ -56,20 +56,19 @@ public class LUT
 	}
 
 	public float ValueAt(float x) {
-		return m_func.Process(x);
+		if (x < m_range.x || x > m_range.y) {
+			Debug.Log("outside");
+			return m_func.Process(x);
+		}
 
-		// if (x < m_range.x || x > m_range.y) {
-		// 	return m_func.Process(x);
-		// }
+		float minKnownX = Mathf.FloorToInt(x / m_precision) * m_precision;
+		float maxKnownX = Mathf.CeilToInt(x / m_precision) * m_precision;
+		float interp = (x - minKnownX) / m_precision;
 
-		// float minKnownX = Mathf.FloorToInt(x / m_precision) * m_precision;
-		// float maxKnownX = Mathf.CeilToInt(x / m_precision) * m_precision;
-		// float interp = (x - minKnownX) / m_precision;
-
-		// float minKnownY = m_table[RoundToKeyPrecision(minKnownX)];
-		// float maxKnownY = m_table[RoundToKeyPrecision(maxKnownX)];
+		float minKnownY = m_table[RoundToKeyPrecision(minKnownX)];
+		float maxKnownY = m_table[RoundToKeyPrecision(maxKnownX)];
 		
-		// return Mathf.Lerp(minKnownY, maxKnownY, interp);
+		return Mathf.Lerp(minKnownY, maxKnownY, interp);
 	}
 
 	public float EstimateComplexity() {

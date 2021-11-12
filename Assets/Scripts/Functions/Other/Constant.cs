@@ -24,10 +24,14 @@ public class Constant : Function
 		get { return value.ToString(); }
 	}
 
-	private int value;
+	private float value;
 
 	public Constant() {
 		value = Random.Range(-10, 11);
+	}
+
+	public Constant(float defaultVal) {
+		value = (float)defaultVal;
 	}
 
 	public override float Operation(params float[] values)

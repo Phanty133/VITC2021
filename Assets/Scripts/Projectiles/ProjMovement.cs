@@ -21,7 +21,7 @@ public class ProjMovement : MonoBehaviour
 	private Vector2 NextPos(float xDist)
 	{
 		float nextX = transform.position.x + xDist;
-		float funcVal = moveLUT.ValueAt(nextX);
+		float funcVal = moveFunction.Process(nextX); // moveLUT.ValueAt(nextX);
 		float nextY;
 
 		if (float.IsNaN(funcVal))
@@ -56,9 +56,18 @@ public class ProjMovement : MonoBehaviour
 		direction = Random.Range(0, 2) == 0 ? -1 : 1;
 
 		surfaceWidth = GameObject.FindGameObjectWithTag("GraphSurface").GetComponent<GraphSurface>().surfaceWidth;
-		moveFunction = FunctionGenerator.Generate(tier);
-		// moveFunction = new Sine();
-		// moveFunction.children.Add(new Unknown());
+		float complexity = float.NaN;
+
+		while (float.IsNaN(complexity) || complexity < 0.1f) {
+			moveFunction = FunctionGenerator.Generate(tier);
+			moveLUT = new LUT(moveFunction, new Vector2(-surfaceWidth * 0.55f, surfaceWidth * 0.55f));
+			complexity = moveLUT.EstimateComplexity();
+
+			if (float.IsNaN(complexity)) {
+				Debug.Log("regen");
+			}
+		}
+
 		moveLUT = new LUT(moveFunction, new Vector2(-surfaceWidth * 0.55f, surfaceWidth * 0.55f));
 		// Debug.Log(moveFunction.GetNotation());
 		Debug.Log(moveLUT.EstimateComplexity());

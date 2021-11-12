@@ -6,13 +6,16 @@ public class AudioGraph : MonoBehaviour
 {
 	public int baseFreq = 1000;
 	public int freqOffsetPerUnit = 40;
-	public int samplerate = 44000;
+	public int samplerate = 32000;
 	private AudioSource audioSource;
 	private float length;
 	private LUT lut;
 	private float surfaceWidth;
 	private int curReadPosition;
 	public bool playing = false;
+	private AudioClip audioClip;
+	private float halfSurfaceWidth;
+	private bool funcComplex;
 
 	private static float RangeToNeg1To1(float value, float min, float max) {
 		float clamped = Mathf.Clamp(value, min, max);
@@ -24,17 +27,27 @@ public class AudioGraph : MonoBehaviour
 	private void OnAudioRead(float[] data) {
 		curReadPosition += data.Length;
 
+		float preCalc1 = surfaceWidth / length;
+
 		for (int i = 0; i < data.Length; i++) {
 			int curSample = curReadPosition + i;
 
 			float curClipTime = curSample / (float)samplerate;
-			float curUnit = (curClipTime / length) * surfaceWidth - surfaceWidth / 2f;
-			float y = lut.ValueAt(curUnit);
+			float curUnit = curClipTime * preCalc1 - halfSurfaceWidth;
+
+			float y;
+
+			if (funcComplex) {
+				y = lut.ValueAt(curUnit);
+			} else {
+				y = lut.m_func.Process(curUnit);
+			}
+
 			int freqOffset = Mathf.RoundToInt(RangeToNeg1To1(y, -10, 10) * 500);
 			
 			int freq = baseFreq + freqOffset;
-			int funcX = curSample * freq / samplerate;
-			float raw = lut.m_func.Process(funcX);
+			int funcX = (freq * curSample) / samplerate;
+			float raw = lut.m_func.Process(funcX + Mathf.Epsilon);
 
 			data[i] = RangeToNeg1To1(raw, -10, 10);
 		}
@@ -56,13 +69,16 @@ public class AudioGraph : MonoBehaviour
 		length = moveTime;
 		lut = movelut;
 		surfaceWidth = GameObject.FindGameObjectWithTag("GraphSurface").GetComponent<GraphSurface>().surfaceWidth;
+		halfSurfaceWidth = surfaceWidth / 2f;
+
+		funcComplex = lut.EstimateComplexity() < 1f;
 
 		float offset = 0;
 		int freq = Mathf.RoundToInt(baseFreq + offset * freqOffsetPerUnit);
-		AudioClip ac = GenerateClip();
+		audioClip = GenerateClip();
 
 		audioSource.volume = muted ? 0 : 0.3f;
-		audioSource.PlayOneShot(ac);
+		audioSource.PlayOneShot(audioClip);
 	}
 
 	public void SetVolume(float vol) {
@@ -70,6 +86,10 @@ public class AudioGraph : MonoBehaviour
 	}
 
 	public void SetPan(float pan) {
-		audioSource.panStereo = pan;
+		// audioSource.panStereo = pan;
+	}
+
+	private void OnDestroy() {
+		AudioClip.Destroy(audioClip);
 	}
 }
