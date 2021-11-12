@@ -24,92 +24,93 @@ public class Player : MonoBehaviour
 	{
 		score += Time.deltaTime;
 		scoreObj.GetComponent<TextMeshProUGUI>().text = Mathf.Floor(score * 10f).ToString();
-		// Vector3 mousePos = Input.mousePosition;
-		// Vector3 worldPos = Camera.main.ScreenToWorldPoint(mousePos);
-		// transform.position = new Vector3(worldPos.x, worldPos.y, transform.position.z);
-		timer -= Time.deltaTime;
-		if (Input.GetKey("w"))
-		{
-			if (timer > 0 && lastHeld == "w")
-			{
-				timer = 0;
-				Vector3 pos = transform.position;
-				pos.y += speed * dashMod;
-				transform.position = pos;
-			}
-			else
-			{
-				held = true;
-				lastHeld = "w";
-				Vector3 pos = transform.position;
-				pos.y += speed * Time.deltaTime;
-				transform.position = pos;
-			}
-		}
+		Vector3 mousePos = Input.mousePosition;
+		Vector3 worldPos = Camera.main.ScreenToWorldPoint(mousePos);
+		transform.position = new Vector3(worldPos.x, worldPos.y, transform.position.z);
 
-		if (Input.GetKey("s"))
-		{
-			if (timer > 0 && lastHeld == "s")
-			{
-				timer = 0;
-				Vector3 pos = transform.position;
-				pos.y -= speed * dashMod;
-				transform.position = pos;
-			}
-			else
-			{
-				held = true;
-				lastHeld = "s";
-				Vector3 pos = transform.position;
-				pos.y -= speed * Time.deltaTime;
-				transform.position = pos;
-			}
-		}
+		// timer -= Time.deltaTime;
+		// if (Input.GetKey("w"))
+		// {
+		// 	if (timer > 0 && lastHeld == "w")
+		// 	{
+		// 		timer = 0;
+		// 		Vector3 pos = transform.position;
+		// 		pos.y += speed * dashMod;
+		// 		transform.position = pos;
+		// 	}
+		// 	else
+		// 	{
+		// 		held = true;
+		// 		lastHeld = "w";
+		// 		Vector3 pos = transform.position;
+		// 		pos.y += speed * Time.deltaTime;
+		// 		transform.position = pos;
+		// 	}
+		// }
+
+		// if (Input.GetKey("s"))
+		// {
+		// 	if (timer > 0 && lastHeld == "s")
+		// 	{
+		// 		timer = 0;
+		// 		Vector3 pos = transform.position;
+		// 		pos.y -= speed * dashMod;
+		// 		transform.position = pos;
+		// 	}
+		// 	else
+		// 	{
+		// 		held = true;
+		// 		lastHeld = "s";
+		// 		Vector3 pos = transform.position;
+		// 		pos.y -= speed * Time.deltaTime;
+		// 		transform.position = pos;
+		// 	}
+		// }
 
 
-		if (Input.GetKey("a"))
-		{
-			if (timer > 0 && lastHeld == "a")
-			{
-				timer = 0;
-				Vector3 pos = transform.position;
-				pos.x -= speed * dashMod;
-				transform.position = pos;
-			}
-			else
-			{
-				held = true;
-				lastHeld = "a";
-				Vector3 pos = transform.position;
-				pos.x -= speed * Time.deltaTime;
-				transform.position = pos;
-			}
-		}
+		// if (Input.GetKey("a"))
+		// {
+		// 	if (timer > 0 && lastHeld == "a")
+		// 	{
+		// 		timer = 0;
+		// 		Vector3 pos = transform.position;
+		// 		pos.x -= speed * dashMod;
+		// 		transform.position = pos;
+		// 	}
+		// 	else
+		// 	{
+		// 		held = true;
+		// 		lastHeld = "a";
+		// 		Vector3 pos = transform.position;
+		// 		pos.x -= speed * Time.deltaTime;
+		// 		transform.position = pos;
+		// 	}
+		// }
 
-		if (Input.GetKey("d"))
-		{
-			if (timer > 0 && lastHeld == "d")
-			{
-				timer = 0;
-				Vector3 pos = transform.position;
-				pos.x += speed * dashMod;
-				transform.position = pos;
-			}
-			else
-			{
-				held = true;
-				lastHeld = "d";
-				Vector3 pos = transform.position;
-				pos.x += speed * Time.deltaTime;
-				transform.position = pos;
-			}
-		}
+		// if (Input.GetKey("d"))
+		// {
+		// 	if (timer > 0 && lastHeld == "d")
+		// 	{
+		// 		timer = 0;
+		// 		Vector3 pos = transform.position;
+		// 		pos.x += speed * dashMod;
+		// 		transform.position = pos;
+		// 	}
+		// 	else
+		// 	{
+		// 		held = true;
+		// 		lastHeld = "d";
+		// 		Vector3 pos = transform.position;
+		// 		pos.x += speed * Time.deltaTime;
+		// 		transform.position = pos;
+		// 	}
+		// }
 
-		if (held && !Input.anyKey)
-		{
-			timer = 0.1f;
-			held = false;
-		}
+		// if (held && !Input.anyKey)
+		// {
+		// 	timer = 0.1f;
+		// 	held = false;
+		// }
 
 		Vector3 poser = transform.position;
 		poser.x = Mathf.Clamp(poser.x, -12f, 12f);
