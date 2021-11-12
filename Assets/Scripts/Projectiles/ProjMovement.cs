@@ -68,6 +68,7 @@ public class ProjMovement : MonoBehaviour
 			}
 		}
 
+		// moveFunction = new Unknown();
 		moveLUT = new LUT(moveFunction, new Vector2(-surfaceWidth * 0.55f, surfaceWidth * 0.55f));
 		// Debug.Log(moveFunction.GetNotation());
 		Debug.Log(moveLUT.EstimateComplexity());

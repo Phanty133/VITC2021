@@ -6,7 +6,7 @@ public class AudioGraph : MonoBehaviour
 {
 	public int baseFreq = 1000;
 	public int freqOffsetPerUnit = 40;
-	public int samplerate = 32000;
+	public int samplerate = 44100;
 	private AudioSource audioSource;
 	private float length;
 	private LUT lut;
@@ -47,9 +47,15 @@ public class AudioGraph : MonoBehaviour
 			
 			int freq = baseFreq + freqOffset;
 			int funcX = (freq * curSample) / samplerate;
-			float raw = lut.m_func.Process(funcX + Mathf.Epsilon);
+			float raw = lut.m_func.Process(funcX);
 
-			data[i] = RangeToNeg1To1(raw, -10, 10);
+			if (float.IsNaN(raw)) {
+				raw = 0;
+			}
+
+			float scaled = RangeToNeg1To1(raw, -10, 10);
+
+			data[i] = scaled;
 		}
 	}
 
