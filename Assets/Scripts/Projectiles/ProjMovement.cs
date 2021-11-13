@@ -11,6 +11,7 @@ public class ProjMovement : MonoBehaviour
 	[HideInInspector]
 	public int tier;
 	public GameObject audioGraphPrefab;
+	public float minComplexity = 0.1f;
 
 	Function moveFunction;
 	LUT moveLUT;
@@ -62,25 +63,25 @@ public class ProjMovement : MonoBehaviour
 
 		float complexity = float.NaN;
 
-		// while (float.IsNaN(complexity) || complexity < 0.1f) {
-		// 	Function randFunc = FunctionGenerator.Generate(tier);
+		while (float.IsNaN(complexity) || complexity < minComplexity) {
+			Function randFunc = FunctionGenerator.Generate(tier);
 
-		// 	if (randomOffset) {
-		// 		moveFunction = new Add(randFunc, new Constant());
-		// 	} else {
-		// 		moveFunction = randFunc;
-		// 	}
+			if (randomOffset) {
+				moveFunction = new Add(randFunc, new Constant());
+			} else {
+				moveFunction = randFunc;
+			}
 			
-		// 	moveLUT = new LUT(moveFunction, new Vector2(-surfaceWidth * 0.51f, surfaceWidth * 0.51f));
-		// 	complexity = moveLUT.EstimateComplexity();
+			moveLUT = new LUT(moveFunction, new Vector2(-halfSurfaceWidth, halfSurfaceWidth));
+			complexity = moveLUT.EstimateComplexity();
 
-		// 	if (float.IsNaN(complexity)) {
-		// 		Debug.Log("regen");
-		// 	}
-		// }
+			if (float.IsNaN(complexity)) {
+				Debug.Log("regen");
+			}
+		}
 
-		moveFunction = new Unknown;
-		moveLUT = new LUT(moveFunction, new Vector2(-surfaceWidth * 0.55f, surfaceWidth * 0.55f));
+		// moveFunction = new Unknown();
+		// moveLUT = new LUT(moveFunction, new Vector2(-halfSurfaceWidth, halfSurfaceWidth));
 		// Debug.Log(moveFunction.GetNotation());
 		Debug.Log(moveLUT.EstimateComplexity());
 
