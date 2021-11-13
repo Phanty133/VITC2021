@@ -34,7 +34,7 @@ public class LUT
 		Debug.Log(table);
 	}
 
-	public LUT(Function f, Vector2 range, float precision = 0.1f) {
+	public LUT(Function f, Vector2 range, float precision = 0.25f) {
 		m_func = f;
 		m_precision = precision;
 		m_range = new Vector2(RoundToKey(range.x), RoundToKey(range.y));

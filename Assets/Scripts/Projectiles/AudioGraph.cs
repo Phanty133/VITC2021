@@ -36,21 +36,18 @@ public class AudioGraph : MonoBehaviour
 		for (int i = 0; i < data.Length; i++) {
 			int curSample = curReadPosition + i;
 
-			if (curSample == 0) {
-				data[i] = 0;
-				continue;
-			}
-
 			float curClipTime = curSample / (float)samplerate;
 			float curUnit = curClipTime * preCalc1 - halfSurfaceWidth;
 
 			float y;
 
-			if (funcComplex) {
-				y = lut.ValueAt(curUnit);
-			} else {
-				y = lut.m_func.Process(curUnit);
-			}
+			y = lut.ValueAt(Mathf.Clamp(curUnit, -halfSurfaceWidth, halfSurfaceWidth));
+
+			// if (funcComplex) {
+			// 	y = lut.ValueAt(curUnit);
+			// } else {
+			// 	y = lut.m_func.Process(curUnit);
+			// }
 
 			int freqOffset = Mathf.RoundToInt(RangeToNeg1To1(y, -10, 10) * 500);
 			
