@@ -23,6 +23,10 @@ public class Add : Function {
 		get { return "({0} + {1})"; }
 	}
 
+	public Add() {}
+
+	public Add(params Function[] funcParams) : base(funcParams) {}
+
 	public override float Operation(params float[] values)
 	{
 		return values[0] + values[1];

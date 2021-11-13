@@ -24,6 +24,10 @@ public class Cosecant : Function
 		get { return "csc({0})"; }
 	}
 
+	public Cosecant() {}
+
+	public Cosecant(params Function[] funcParams) : base(funcParams) {}
+
 	public override float Operation(params float[] values)
 	{
 		return 1 / Mathf.Sin(values[0]);

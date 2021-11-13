@@ -24,6 +24,10 @@ public class Tangent : Function
 		get { return "tan({0})"; }
 	}
 
+	public Tangent() {}
+
+	public Tangent(params Function[] funcParams) : base(funcParams) {}
+
 	public override float Operation(params float[] values)
 	{
 		return Mathf.Tan(values[0]);

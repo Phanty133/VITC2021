@@ -619,6 +619,7 @@ MonoBehaviour:
   randomSpeed: 1
   randomSpeedOffset: 1
   projContainer: {fileID: 342846835}
+  randomOffset: 1
 --- !u!1 &537042860
 GameObject:
   m_ObjectHideFlags: 0

@@ -11,6 +11,7 @@ public class ProjectileManager : MonoBehaviour
 	public bool randomSpeed = true;
 	public float randomSpeedOffset = 1f; // Max offset for random speed
 	public GameObject projContainer;
+	public bool randomOffset = false;
 
 	private float spawnTime;
 	private float spawnTimer;
@@ -46,7 +47,7 @@ public class ProjectileManager : MonoBehaviour
 			projMovement.speed = baseSpeed;
 		}
 
-		projMovement.InitProjectile(graphMuted);
+		projMovement.InitProjectile(graphMuted, randomOffset);
 	}
 
 	private void Start() {

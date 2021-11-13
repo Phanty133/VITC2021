@@ -24,6 +24,10 @@ public class Cosine : Function
 		get { return "cos({0})"; }
 	}
 
+	public Cosine() {}
+
+	public Cosine(params Function[] funcParams) : base(funcParams) {}
+
 	public override float Operation(params float[] values)
 	{
 		return Mathf.Cos(values[0]);

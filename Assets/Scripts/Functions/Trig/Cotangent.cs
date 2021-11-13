@@ -24,6 +24,10 @@ public class Cotangent : Function
 		get { return "cot({0})"; }
 	}
 
+	public Cotangent() {}
+
+	public Cotangent(params Function[] funcParams) : base(funcParams) {}
+
 	public override float Operation(params float[] values)
 	{
 		return 1 / Mathf.Tan(values[0]);

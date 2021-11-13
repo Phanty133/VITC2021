@@ -52,14 +52,21 @@ public class ProjMovement : MonoBehaviour
 		graphMuted = true;
 	}
 
-	public void InitProjectile(bool muted = false) {
+	public void InitProjectile(bool muted = false, bool randomOffset = false) {
 		direction = Random.Range(0, 2) == 0 ? -1 : 1;
 
 		surfaceWidth = GameObject.FindGameObjectWithTag("GraphSurface").GetComponent<GraphSurface>().surfaceWidth;
 		float complexity = float.NaN;
 
 		while (float.IsNaN(complexity) || complexity < 0.1f) {
-			moveFunction = FunctionGenerator.Generate(tier);
+			Function randFunc = FunctionGenerator.Generate(tier);
+
+			if (randomOffset) {
+				moveFunction = new Add(randFunc, new Constant());
+			} else {
+				moveFunction = randFunc;
+			}
+			
 			moveLUT = new LUT(moveFunction, new Vector2(-surfaceWidth * 0.55f, surfaceWidth * 0.55f));
 			complexity = moveLUT.EstimateComplexity();
 
@@ -69,9 +76,19 @@ public class ProjMovement : MonoBehaviour
 		}
 
 		// moveFunction = new Unknown();
-		moveLUT = new LUT(moveFunction, new Vector2(-surfaceWidth * 0.55f, surfaceWidth * 0.55f));
+		// moveLUT = new LUT(moveFunction, new Vector2(-surfaceWidth * 0.55f, surfaceWidth * 0.55f));
 		// Debug.Log(moveFunction.GetNotation());
 		Debug.Log(moveLUT.EstimateComplexity());
+
+		if (randomOffset) {
+			Function offsetFunc = new Add();
+			offsetFunc.children.Add(moveFunction);
+			offsetFunc.children.Add(new Constant());
+
+			moveFunction = offsetFunc;
+		}
+
+		Debug.Log(moveFunction.GetNotation());
 
 		if (randomColor)
 		{

@@ -24,6 +24,10 @@ public class Sine : Function
 		get { return "sin({0})"; }
 	}
 
+	public Sine() {}
+
+	public Sine(params Function[] funcParams) : base(funcParams) {}
+
 	public override float Operation(params float[] values)
 	{
 		return Mathf.Sin(values[0]);

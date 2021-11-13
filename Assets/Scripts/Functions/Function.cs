@@ -12,6 +12,10 @@ public abstract class Function {
 	public List<Function> children = new List<Function>(2);
 	public abstract float Operation(params float[] values);
 
+	public Function(params Function[] funcParams) {
+		children = new List<Function>(funcParams);
+	}
+
 	public float Process(float a) {
 		switch (paramCount) {
 			case 0:

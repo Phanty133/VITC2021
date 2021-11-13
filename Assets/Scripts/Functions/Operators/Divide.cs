@@ -24,6 +24,10 @@ public class Divide : Function
 		get { return "({0} / {1})"; }
 	}
 
+	public Divide() {}
+
+	public Divide(params Function[] funcParams) : base(funcParams) {}
+
 	public override float Operation(params float[] values)
 	{
 		return values[0] / values[1];

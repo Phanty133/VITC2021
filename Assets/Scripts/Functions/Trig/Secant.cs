@@ -24,6 +24,10 @@ public class Secant : Function
 		get { return "sec({0})"; }
 	}
 
+	public Secant() {}
+
+	public Secant(params Function[] funcParams) : base(funcParams) {}
+
 	public override float Operation(params float[] values)
 	{
 		return 1 / Mathf.Cos(values[0]);

@@ -24,6 +24,10 @@ public class Multiply : Function
 		get { return "({0} * {1})"; }
 	}
 
+	public Multiply() {}
+
+	public Multiply(params Function[] funcParams) : base(funcParams) {}
+
 	public override float Operation(params float[] values)
 	{
 		return values[0] * values[1];

@@ -24,6 +24,10 @@ public class Abs : Function
 		get { return "|{0}|"; }
 	}
 
+	public Abs() {}
+
+	public Abs(params Function[] funcParams) : base(funcParams) {}
+
 	public override float Operation(params float[] values)
 	{
 		return Mathf.Abs(values[0]);
