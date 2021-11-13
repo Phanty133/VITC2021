@@ -57,7 +57,6 @@ public class LUT
 
 	public float ValueAt(float x) {
 		if (x < m_range.x || x > m_range.y) {
-			Debug.Log("outside");
 			return m_func.Process(x);
 		}
 

@@ -10,6 +10,7 @@ public class ProjMovement : MonoBehaviour
 	public bool randomColor = true;
 	[HideInInspector]
 	public int tier;
+	public GameObject audioGraphPrefab;
 
 	Function moveFunction;
 	LUT moveLUT;
@@ -17,6 +18,8 @@ public class ProjMovement : MonoBehaviour
 	Graph graphComp;
 	AudioGraph audioGraph;
 	bool graphMuted = false;
+	GameObject audioGraphObj;
+	float halfSurfaceWidth;
 
 	private Vector2 NextPos(float xDist)
 	{
@@ -54,29 +57,30 @@ public class ProjMovement : MonoBehaviour
 
 	public void InitProjectile(bool muted = false, bool randomOffset = false) {
 		direction = Random.Range(0, 2) == 0 ? -1 : 1;
-
 		surfaceWidth = GameObject.FindGameObjectWithTag("GraphSurface").GetComponent<GraphSurface>().surfaceWidth;
+		halfSurfaceWidth = surfaceWidth / 2f;
+
 		float complexity = float.NaN;
 
-		while (float.IsNaN(complexity) || complexity < 0.1f) {
-			Function randFunc = FunctionGenerator.Generate(tier);
+		// while (float.IsNaN(complexity) || complexity < 0.1f) {
+		// 	Function randFunc = FunctionGenerator.Generate(tier);
 
-			if (randomOffset) {
-				moveFunction = new Add(randFunc, new Constant());
-			} else {
-				moveFunction = randFunc;
-			}
+		// 	if (randomOffset) {
+		// 		moveFunction = new Add(randFunc, new Constant());
+		// 	} else {
+		// 		moveFunction = randFunc;
+		// 	}
 			
-			moveLUT = new LUT(moveFunction, new Vector2(-surfaceWidth * 0.55f, surfaceWidth * 0.55f));
-			complexity = moveLUT.EstimateComplexity();
+		// 	moveLUT = new LUT(moveFunction, new Vector2(-surfaceWidth * 0.51f, surfaceWidth * 0.51f));
+		// 	complexity = moveLUT.EstimateComplexity();
 
-			if (float.IsNaN(complexity)) {
-				Debug.Log("regen");
-			}
-		}
+		// 	if (float.IsNaN(complexity)) {
+		// 		Debug.Log("regen");
+		// 	}
+		// }
 
-		// moveFunction = new Unknown();
-		// moveLUT = new LUT(moveFunction, new Vector2(-surfaceWidth * 0.55f, surfaceWidth * 0.55f));
+		moveFunction = new Sine(new Unknown());
+		moveLUT = new LUT(moveFunction, new Vector2(-surfaceWidth * 0.55f, surfaceWidth * 0.55f));
 		// Debug.Log(moveFunction.GetNotation());
 		Debug.Log(moveLUT.EstimateComplexity());
 
@@ -109,24 +113,27 @@ public class ProjMovement : MonoBehaviour
 
 		transform.position = new Vector2(surfaceWidth * 0.55f * -direction, 0);
 
-		audioGraph = GetComponent<AudioGraph>();
+		Transform audioGraphContainer = GameObject.FindGameObjectWithTag("GraphAudio").transform;
+		audioGraphObj = Instantiate(audioGraphPrefab, new Vector3(), new Quaternion(), audioGraphContainer);
+		audioGraph = audioGraphObj.GetComponent<AudioGraph>();
 		graphMuted = muted;
 	}
 
 	private void Update()
 	{
-		if (transform.position.x * direction < surfaceWidth)
+		if (transform.position.x * direction < halfSurfaceWidth)
 		{
 			transform.position = NextPos(speed * Time.deltaTime * direction);
 
-			if (Mathf.Abs(transform.position.x) < surfaceWidth / 2f && !audioGraph.playing) {
+			if (Mathf.Abs(transform.position.x) < halfSurfaceWidth && !audioGraph.playing) {
 				audioGraph.PlayGraph(moveLUT, surfaceWidth / speed, graphMuted);
 			} else if (audioGraph.playing) {
-				audioGraph.SetPan(transform.position.x / (surfaceWidth / 2f));
+				audioGraph.SetPan(transform.position.x / halfSurfaceWidth);
 			}
 		}
 		else
 		{
+			audioGraph.Fade();
 			Destroy(gameObject);
 		}
 	}

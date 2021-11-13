@@ -7,6 +7,8 @@ public class AudioGraph : MonoBehaviour
 	public int baseFreq = 1000;
 	public int freqOffsetPerUnit = 40;
 	public int samplerate = 44100;
+	public float fadeTime = 1f;
+	public float volume = 0.3f;
 	private AudioSource audioSource;
 	private float length;
 	private LUT lut;
@@ -16,6 +18,8 @@ public class AudioGraph : MonoBehaviour
 	private AudioClip audioClip;
 	private float halfSurfaceWidth;
 	private bool funcComplex;
+	private bool fadeActive = false;
+	private float fadeTimer;
 
 	private static float RangeToNeg1To1(float value, float min, float max) {
 		float clamped = Mathf.Clamp(value, min, max);
@@ -27,10 +31,15 @@ public class AudioGraph : MonoBehaviour
 	private void OnAudioRead(float[] data) {
 		curReadPosition += data.Length;
 
-		float preCalc1 = surfaceWidth / length;
+		float preCalc1 = surfaceWidth / (length - fadeTime);
 
 		for (int i = 0; i < data.Length; i++) {
 			int curSample = curReadPosition + i;
+
+			if (curSample == 0) {
+				data[i] = 0;
+				continue;
+			}
 
 			float curClipTime = curSample / (float)samplerate;
 			float curUnit = curClipTime * preCalc1 - halfSurfaceWidth;
@@ -72,7 +81,7 @@ public class AudioGraph : MonoBehaviour
 	public void PlayGraph(LUT movelut, float moveTime, bool muted = false) {
 		playing = true;
 		audioSource = gameObject.GetComponent<AudioSource>();
-		length = moveTime;
+		length = moveTime + fadeTime;
 		lut = movelut;
 		surfaceWidth = GameObject.FindGameObjectWithTag("GraphSurface").GetComponent<GraphSurface>().surfaceWidth;
 		halfSurfaceWidth = surfaceWidth / 2f;
@@ -83,7 +92,7 @@ public class AudioGraph : MonoBehaviour
 		int freq = Mathf.RoundToInt(baseFreq + offset * freqOffsetPerUnit);
 		audioClip = GenerateClip();
 
-		audioSource.volume = muted ? 0 : 0.3f;
+		audioSource.volume = muted ? 0 : volume;
 		audioSource.PlayOneShot(audioClip);
 	}
 
@@ -92,7 +101,24 @@ public class AudioGraph : MonoBehaviour
 	}
 
 	public void SetPan(float pan) {
-		// audioSource.panStereo = pan;
+		audioSource.panStereo = pan;
+	}
+
+	public void Fade() {
+		fadeTimer = fadeTime;
+		fadeActive = true;
+	}
+
+	private void FixedUpdate() {
+		if (fadeActive) {
+			fadeTimer -= Time.fixedDeltaTime;
+
+			if (fadeTimer <= 0) {
+				Destroy(gameObject);
+			} else {
+				audioSource.volume = volume * (fadeTimer / fadeTime);
+			}
+		}
 	}
 
 	private void OnDestroy() {
