@@ -79,20 +79,10 @@ public class ProjMovement : MonoBehaviour
 		// 	}
 		// }
 
-		moveFunction = new Sine(new Unknown());
+		moveFunction = new Unknown;
 		moveLUT = new LUT(moveFunction, new Vector2(-surfaceWidth * 0.55f, surfaceWidth * 0.55f));
 		// Debug.Log(moveFunction.GetNotation());
 		Debug.Log(moveLUT.EstimateComplexity());
-
-		if (randomOffset) {
-			Function offsetFunc = new Add();
-			offsetFunc.children.Add(moveFunction);
-			offsetFunc.children.Add(new Constant());
-
-			moveFunction = offsetFunc;
-		}
-
-		Debug.Log(moveFunction.GetNotation());
 
 		if (randomColor)
 		{
