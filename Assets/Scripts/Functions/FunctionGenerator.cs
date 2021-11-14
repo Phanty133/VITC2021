@@ -30,7 +30,7 @@ public static class FunctionGenerator
 	private static List<string> GetFunctionsInTier(int tier) {
 		List<string> output = new List<string>();
 
-		for (int i = 0; i < tier; i++) {
+		for (int i = 0; i <= tier; i++) {
 			if (funcTiers.ContainsKey(i)) {
 				output.AddRange(funcTiers[i]);
 			}
@@ -39,10 +39,23 @@ public static class FunctionGenerator
 		return output;
 	}
 
-	public static Function Generate(int tier = 100, int maxDepth = 2, int curDepth = 0) {
+	private static int ProbabilityRound(float val) {
+		int minVal = Mathf.FloorToInt(val);
+		int maxVal = Mathf.CeilToInt(val);
+		
+		float fract = val - minVal;
+		float randVal = UnityEngine.Random.Range(0f, 1f);
+
+		return fract < randVal ? minVal : maxVal;
+	}
+
+	public static Function Generate(float rawTier = 100, float rawMaxDepth = 2, int curDepth = 0) {
 		if (funcTypes.Count == 0) {
 			LoadFunctions();
 		}
+
+		int tier = ProbabilityRound(rawTier);
+		int maxDepth = ProbabilityRound(rawMaxDepth);
 
 		List<string> funcsInTier = GetFunctionsInTier(tier);
 		string funcId = funcsInTier.ElementAt(UnityEngine.Random.Range(0, funcsInTier.Count));

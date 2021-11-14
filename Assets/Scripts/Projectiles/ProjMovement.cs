@@ -9,7 +9,8 @@ public class ProjMovement : MonoBehaviour
 	public Color color;
 	public bool randomColor = true;
 	[HideInInspector]
-	public int tier;
+	public float tier;
+	public float funcDepth;
 	public GameObject audioGraphPrefab;
 	public float minComplexity = 0.1f;
 
@@ -21,6 +22,7 @@ public class ProjMovement : MonoBehaviour
 	bool graphMuted = false;
 	GameObject audioGraphObj;
 	float halfSurfaceWidth;
+	ProjectileManager projectileManager;
 
 	private Vector2 NextPos(float xDist)
 	{
@@ -56,7 +58,8 @@ public class ProjMovement : MonoBehaviour
 		graphMuted = true;
 	}
 
-	public void InitProjectile(bool muted = false, bool randomOffset = false) {
+	public void InitProjectile(ProjectileManager projMgr, bool muted = false, bool randomOffset = false) {
+		projectileManager = projMgr;
 		direction = Random.Range(0, 2) == 0 ? -1 : 1;
 		surfaceWidth = GameObject.FindGameObjectWithTag("GraphSurface").GetComponent<GraphSurface>().surfaceWidth;
 		halfSurfaceWidth = surfaceWidth / 2f;
@@ -64,7 +67,7 @@ public class ProjMovement : MonoBehaviour
 		float complexity = float.NaN;
 
 		while (float.IsNaN(complexity) || complexity < minComplexity) {
-			Function randFunc = FunctionGenerator.Generate(tier);
+			Function randFunc = FunctionGenerator.Generate(tier, funcDepth);
 
 			if (randomOffset) {
 				moveFunction = new Add(randFunc, new Constant());
@@ -127,5 +130,9 @@ public class ProjMovement : MonoBehaviour
 			audioGraph.Fade();
 			Destroy(gameObject);
 		}
+	}
+
+	private void OnDestroy() {
+		projectileManager.OnProjectileDestroy();
 	}
 }
