@@ -27,7 +27,7 @@ public class Constant : Function
 	private float value;
 
 	public Constant() {
-		value = Random.Range(-7, 8);
+		value = Random.Range(-5, 6);
 	}
 
 	public Constant(float defaultVal) {

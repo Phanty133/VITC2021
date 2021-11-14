@@ -93,8 +93,12 @@ public class AudioGraph : MonoBehaviour
 		audioSource.PlayOneShot(audioClip);
 	}
 
-	public void SetVolume(float vol) {
-		audioSource.volume = vol;
+	public void Mute() {
+		audioSource.mute = false;
+	}
+
+	public void Unmute() {
+		audioSource.mute = true;
 	}
 
 	public void SetPan(float pan) {

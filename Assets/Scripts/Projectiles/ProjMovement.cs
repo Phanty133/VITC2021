@@ -49,12 +49,12 @@ public class ProjMovement : MonoBehaviour
 	}
 
 	public void UnmuteAudioGraph() {
-		audioGraph.SetVolume(0.3f);
+		audioGraph.Unmute();
 		graphMuted = false;
 	}
 
 	public void MuteAudioGraph() {
-		audioGraph.SetVolume(0);
+		audioGraph.Mute();
 		graphMuted = true;
 	}
 
@@ -69,7 +69,7 @@ public class ProjMovement : MonoBehaviour
 		while (float.IsNaN(complexity) || complexity < minComplexity) {
 			Function randFunc = FunctionGenerator.Generate(tier, funcDepth);
 
-			if (randomOffset) {
+			if (randomOffset && randFunc.id != "add") {
 				moveFunction = new Add(randFunc, new Constant());
 			} else {
 				moveFunction = randFunc;
