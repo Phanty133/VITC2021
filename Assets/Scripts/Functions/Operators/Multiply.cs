@@ -20,9 +20,29 @@ public class Multiply : Function
 		get { return 2; }
 	}
 
-	protected override string notationTemplate {
-		get { return "({0} * {1})"; }
+	public override int priority {
+		get { return 1; }
 	}
+
+	protected override bool overrideNotation {
+		get { return false; }
+	}
+
+	protected override string notationTemplate {
+		get {
+			if (children[0].id == "const" && children[1].id != "const") {
+				return "{0}{1}";
+			} else if (children[0].id != "const" && children[1].id == "const") {
+				return "{1}{0}";
+			} else {
+				return "{0} * {1}";
+			}
+		}
+	}
+
+	public Multiply() {}
+
+	public Multiply(params Function[] funcParams) : base(funcParams) {}
 
 	public override float Operation(params float[] values)
 	{

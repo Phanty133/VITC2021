@@ -20,6 +20,14 @@ public class Constant : Function
 		get { return 0; }
 	}
 
+	public override int priority {
+		get { return 4; }
+	}
+
+	protected override bool overrideNotation {
+		get { return false; }
+	}
+
 	protected override string notationTemplate {
 		get { return value.ToString(); }
 	}
@@ -27,7 +35,7 @@ public class Constant : Function
 	private float value;
 
 	public Constant() {
-		value = Random.Range(-7, 8);
+		value = Random.Range(-5, 6);
 	}
 
 	public Constant(float defaultVal) {

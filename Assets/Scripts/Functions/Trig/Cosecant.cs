@@ -20,9 +20,21 @@ public class Cosecant : Function
 		get { return 1; }
 	}
 
+	public override int priority {
+		get { return 2; }
+	}
+
+	protected override bool overrideNotation {
+		get { return false; }
+	}
+
 	protected override string notationTemplate {
 		get { return "csc({0})"; }
 	}
+
+	public Cosecant() {}
+
+	public Cosecant(params Function[] funcParams) : base(funcParams) {}
 
 	public override float Operation(params float[] values)
 	{

@@ -20,9 +20,21 @@ public class Divide : Function
 		get { return 2; }
 	}
 
-	protected override string notationTemplate {
-		get { return "({0} / {1})"; }
+	public override int priority {
+		get { return 1; }
 	}
+
+	protected override bool overrideNotation {
+		get { return false; }
+	}
+
+	protected override string notationTemplate {
+		get { return "{0} / {1}"; }
+	}
+
+	public Divide() {}
+
+	public Divide(params Function[] funcParams) : base(funcParams) {}
 
 	public override float Operation(params float[] values)
 	{

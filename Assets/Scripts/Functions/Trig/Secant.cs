@@ -20,9 +20,21 @@ public class Secant : Function
 		get { return 1; }
 	}
 
+	public override int priority {
+		get { return 2; }
+	}
+
+	protected override bool overrideNotation {
+		get { return false; }
+	}
+
 	protected override string notationTemplate {
 		get { return "sec({0})"; }
 	}
+
+	public Secant() {}
+
+	public Secant(params Function[] funcParams) : base(funcParams) {}
 
 	public override float Operation(params float[] values)
 	{

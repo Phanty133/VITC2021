@@ -7,6 +7,7 @@ public class AudioGraph : MonoBehaviour
 	public int baseFreq = 1000;
 	public int freqOffsetPerUnit = 40;
 	public int samplerate = 44100;
+	public float fadeTime = 1f;
 	private AudioSource audioSource;
 	private float length;
 	private LUT lut;
@@ -16,6 +17,9 @@ public class AudioGraph : MonoBehaviour
 	private AudioClip audioClip;
 	private float halfSurfaceWidth;
 	private bool funcComplex;
+	private bool fadeActive = false;
+	private float fadeTimer;
+	private float volume;
 
 	private static float RangeToNeg1To1(float value, float min, float max) {
 		float clamped = Mathf.Clamp(value, min, max);
@@ -27,7 +31,7 @@ public class AudioGraph : MonoBehaviour
 	private void OnAudioRead(float[] data) {
 		curReadPosition += data.Length;
 
-		float preCalc1 = surfaceWidth / length;
+		float preCalc1 = surfaceWidth / (length - fadeTime);
 
 		for (int i = 0; i < data.Length; i++) {
 			int curSample = curReadPosition + i;
@@ -37,11 +41,13 @@ public class AudioGraph : MonoBehaviour
 
 			float y;
 
-			if (funcComplex) {
-				y = lut.ValueAt(curUnit);
-			} else {
-				y = lut.m_func.Process(curUnit);
-			}
+			y = lut.ValueAt(Mathf.Clamp(curUnit, -halfSurfaceWidth, halfSurfaceWidth));
+
+			// if (funcComplex) {
+			// 	y = lut.ValueAt(curUnit);
+			// } else {
+			// 	y = lut.m_func.Process(curUnit);
+			// }
 
 			int freqOffset = Mathf.RoundToInt(RangeToNeg1To1(y, -10, 10) * 500);
 			
@@ -72,7 +78,7 @@ public class AudioGraph : MonoBehaviour
 	public void PlayGraph(LUT movelut, float moveTime, bool muted = false) {
 		playing = true;
 		audioSource = gameObject.GetComponent<AudioSource>();
-		length = moveTime;
+		length = moveTime + fadeTime;
 		lut = movelut;
 		surfaceWidth = GameObject.FindGameObjectWithTag("GraphSurface").GetComponent<GraphSurface>().surfaceWidth;
 		halfSurfaceWidth = surfaceWidth / 2f;
@@ -83,16 +89,42 @@ public class AudioGraph : MonoBehaviour
 		int freq = Mathf.RoundToInt(baseFreq + offset * freqOffsetPerUnit);
 		audioClip = GenerateClip();
 
-		audioSource.volume = muted ? 0 : 0.3f;
+		audioSource.volume = volume;
+		audioSource.mute = muted;
 		audioSource.PlayOneShot(audioClip);
 	}
 
-	public void SetVolume(float vol) {
-		audioSource.volume = vol;
+	public void Mute() {
+		audioSource.mute = false;
+	}
+
+	public void Unmute() {
+		audioSource.mute = true;
 	}
 
 	public void SetPan(float pan) {
-		// audioSource.panStereo = pan;
+		audioSource.panStereo = pan;
+	}
+
+	public void Fade() {
+		fadeTimer = fadeTime;
+		fadeActive = true;
+	}
+
+	private void Awake() {
+		volume = transform.parent.GetComponent<AudioGraphContainer>().volume;
+	}
+
+	private void FixedUpdate() {
+		if (fadeActive) {
+			fadeTimer -= Time.fixedDeltaTime;
+
+			if (fadeTimer <= 0) {
+				Destroy(gameObject);
+			} else {
+				audioSource.volume = volume * (fadeTimer / fadeTime);
+			}
+		}
 	}
 
 	private void OnDestroy() {

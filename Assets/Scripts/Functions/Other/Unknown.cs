@@ -20,6 +20,14 @@ public class Unknown : Function
 		get { return 0; }
 	}
 
+	public override int priority {
+		get { return 4; }
+	}
+
+	protected override bool overrideNotation {
+		get { return false; }
+	}
+
 	protected override string notationTemplate {
 		get { return "x"; }
 	}
