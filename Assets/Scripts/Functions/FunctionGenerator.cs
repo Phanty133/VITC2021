@@ -58,7 +58,14 @@ public static class FunctionGenerator
 		int maxDepth = ProbabilityRound(rawMaxDepth);
 
 		List<string> funcsInTier = GetFunctionsInTier(tier);
-		string funcId = funcsInTier.ElementAt(UnityEngine.Random.Range(0, funcsInTier.Count));
+		string funcId;
+		try {
+			funcId = funcsInTier.ElementAt(UnityEngine.Random.Range(0, funcsInTier.Count));
+		} catch {
+			Debug.Log(tier);
+			throw;
+		}
+		
 		Type funcType = funcTypes[funcId];
 		Function func = (Function)Activator.CreateInstance(funcType);
 

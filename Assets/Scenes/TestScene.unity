@@ -740,6 +740,8 @@ MonoBehaviour:
   score: 0
   speed: 5
   dashMod: 0.5
+  maxOffset: 1
+  collisionTime: 0.5
   scoreObj: {fileID: 178634713}
 --- !u!212 &665881531
 SpriteRenderer:
@@ -1896,7 +1898,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0d437d1a2adff9749944dc9be6496e60, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  disable: 1
+  disable: 0
   projectileManagerObj: {fileID: 391449160}
   playerObj: {fileID: 665881528}
   speedScaling: 100

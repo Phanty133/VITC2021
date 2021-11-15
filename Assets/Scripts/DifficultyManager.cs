@@ -47,10 +47,12 @@ public class DifficultyManager : MonoBehaviour
 	public void UpdateValues() {
 		if (disable) return;
 
-		projectileManager.baseSpeed = CalcSpeed(player.score);
-		projectileManager.spawnRate = CalcSpawnRate(player.score);
-		projectileManager.tier = CalcTier(player.score);
-		projectileManager.funcDepth = CalcDepth(player.score);
+		float clampedScore = Mathf.Clamp(player.score, 0, Mathf.Infinity);
+
+		projectileManager.baseSpeed = CalcSpeed(clampedScore);
+		projectileManager.spawnRate = CalcSpawnRate(clampedScore);
+		projectileManager.tier = CalcTier(clampedScore);
+		projectileManager.funcDepth = CalcDepth(clampedScore);
 	}
 
 	private void Start() {
