@@ -20,8 +20,16 @@ public class Divide : Function
 		get { return 2; }
 	}
 
+	public override int priority {
+		get { return 1; }
+	}
+
+	protected override bool overrideNotation {
+		get { return false; }
+	}
+
 	protected override string notationTemplate {
-		get { return "({0} / {1})"; }
+		get { return "{0} / {1}"; }
 	}
 
 	public Divide() {}

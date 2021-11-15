@@ -8,7 +8,6 @@ public class AudioGraph : MonoBehaviour
 	public int freqOffsetPerUnit = 40;
 	public int samplerate = 44100;
 	public float fadeTime = 1f;
-	public float volume = 0.3f;
 	private AudioSource audioSource;
 	private float length;
 	private LUT lut;
@@ -20,6 +19,7 @@ public class AudioGraph : MonoBehaviour
 	private bool funcComplex;
 	private bool fadeActive = false;
 	private float fadeTimer;
+	private float volume;
 
 	private static float RangeToNeg1To1(float value, float min, float max) {
 		float clamped = Mathf.Clamp(value, min, max);
@@ -89,7 +89,8 @@ public class AudioGraph : MonoBehaviour
 		int freq = Mathf.RoundToInt(baseFreq + offset * freqOffsetPerUnit);
 		audioClip = GenerateClip();
 
-		audioSource.volume = muted ? 0 : volume;
+		audioSource.volume = volume;
+		audioSource.mute = muted;
 		audioSource.PlayOneShot(audioClip);
 	}
 
@@ -108,6 +109,10 @@ public class AudioGraph : MonoBehaviour
 	public void Fade() {
 		fadeTimer = fadeTime;
 		fadeActive = true;
+	}
+
+	private void Awake() {
+		volume = transform.parent.GetComponent<AudioGraphContainer>().volume;
 	}
 
 	private void FixedUpdate() {

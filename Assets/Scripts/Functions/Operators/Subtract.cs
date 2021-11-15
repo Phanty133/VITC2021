@@ -20,8 +20,40 @@ public class Subtract : Function
 		get { return 2; }
 	}
 
-	protected override string notationTemplate {
-		get { return "({0} - {1})"; }
+	public override int priority {
+		get { return 0; }
+	}
+
+	protected override bool overrideNotation {
+		get { return true; }
+	}
+
+	protected override string notationTemplate {  // An absolute mess
+		get {
+			if (children[0].id == "const" || children[1].id == "const") {
+				if (children[0].id == "const" && children[0].Process(0) == 0) {
+					if (children[1].id == "const") {
+						if (children[1].Process(0) < 0) {
+							return string.Format("{1}", "", children[1].GetNotation().Substring(1));
+						} else {
+							return string.Format("-{1}", "", children[1].GetNotation());
+						}
+					} else {
+						return string.Format("-{1}", "", children[1].GetNotation());
+					}
+				} else if (children[1].id == "const" && children[1].Process(0) == 0) {
+					return string.Format("{0}", children[0].GetNotation(), "");
+				} else if (children[1].id == "const" && children[1].Process(0) < 0) {
+					return string.Format("{0} - {1}", children[0].GetNotation(), children[1].GetNotation().Substring(1));
+				} else if (children[0].id == "const" && children[0].Process(0) < 0) {
+					return string.Format("{1} - {0}", children[1].GetNotation(), children[0].GetNotation().Substring(1));
+				} else {
+					return DefaultGetNotation("{0} - {1}");
+				}
+			} else {
+				return DefaultGetNotation("{0} - {1}");
+			}
+		}
 	}
 
 	public Subtract() {}

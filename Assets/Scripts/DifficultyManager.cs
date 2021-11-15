@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class DifficultyManager : MonoBehaviour
 {
+	public bool disable = false;
 	public GameObject projectileManagerObj;
 	public GameObject playerObj;
 	public float speedScaling = 100f; // The smaller the value, the faster it increases
@@ -44,6 +45,8 @@ public class DifficultyManager : MonoBehaviour
 	}
 
 	public void UpdateValues() {
+		if (disable) return;
+
 		projectileManager.baseSpeed = CalcSpeed(player.score);
 		projectileManager.spawnRate = CalcSpawnRate(player.score);
 		projectileManager.tier = CalcTier(player.score);

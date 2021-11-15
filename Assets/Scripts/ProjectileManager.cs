@@ -14,6 +14,7 @@ public class ProjectileManager : MonoBehaviour
 	public float randomSpeedOffset = 1f; // Max percentage offset from base speed (0f - 1f)
 	public GameObject projContainer;
 	public bool randomOffset = false;
+	public bool mainMenuMode = false;
 
 	private float spawnTime;
 	private float spawnTimer;
@@ -55,7 +56,7 @@ public class ProjectileManager : MonoBehaviour
 	}
 
 	private void Start() {
-		difficultyManager = difficultyManagerObj.GetComponent<DifficultyManager>();
+		if(!mainMenuMode) difficultyManager = difficultyManagerObj.GetComponent<DifficultyManager>();
 
 		spawnTime = 1 / spawnRate;
 		spawnTimer = spawnTime;
@@ -72,6 +73,6 @@ public class ProjectileManager : MonoBehaviour
 	}
 
 	public void OnProjectileDestroy() {
-		difficultyManager.UpdateValues();
+		if (!mainMenuMode) difficultyManager.UpdateValues();
 	}
 }

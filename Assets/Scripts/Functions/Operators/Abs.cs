@@ -20,6 +20,14 @@ public class Abs : Function
 		get { return 1; }
 	}
 
+	public override int priority {
+		get { return 3; }
+	}
+
+	protected override bool overrideNotation {
+		get { return false; }
+	}
+
 	protected override string notationTemplate {
 		get { return "|{0}|"; }
 	}
