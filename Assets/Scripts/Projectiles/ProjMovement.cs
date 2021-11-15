@@ -117,7 +117,8 @@ public class ProjMovement : MonoBehaviour
 	{
 		if (transform.position.x * direction < halfSurfaceWidth)
 		{
-			transform.position = NextPos(speed * Time.deltaTime * direction);
+			Vector2 nextPos = NextPos(speed * Time.deltaTime * direction);
+			transform.position = new Vector3(nextPos.x, nextPos.y, transform.parent.position.z);
 
 			if (Mathf.Abs(transform.position.x) < halfSurfaceWidth && !audioGraph.playing) {
 				audioGraph.PlayGraph(moveLUT, surfaceWidth / speed, graphMuted);

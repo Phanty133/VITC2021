@@ -15,7 +15,7 @@ Shader "Custom/DamageShader"
         float2 uv = UnityStereoTransformScreenSpaceTex(input.texcoord);
         float4 color = LOAD_TEXTURE2D_X(_MainTex, uv * _ScreenSize.xy);
 
-	    color.x += _Intensity;
+	    color = color * (1 - _Intensity) + float4(1,0,0,1) * _Intensity;
 
 
         return color;
