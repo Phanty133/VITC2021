@@ -47,6 +47,18 @@ public class GraphSurface : MonoBehaviour
 		graphCoords[guid].Add(graphPixel);
 	}
 
+	private void SetCircle(Guid guid, Color color, int xc, int yc, int x, int y) {
+		SetPixelSafe(guid, new Vector2Int(xc+x, yc+y), color);
+		SetPixelSafe(guid, new Vector2Int(xc-x, yc+y), color);
+		SetPixelSafe(guid, new Vector2Int(xc+x, yc-y), color);
+		SetPixelSafe(guid, new Vector2Int(xc-x, yc-y), color);
+
+		SetPixelSafe(guid, new Vector2Int(xc+y, yc+x), color);
+		SetPixelSafe(guid, new Vector2Int(xc-y, yc+x), color);
+		SetPixelSafe(guid, new Vector2Int(xc+y, yc-x), color);
+		SetPixelSafe(guid, new Vector2Int(xc-y, yc-x), color);
+	}
+
 	private void DrawLine(Guid guid, Texture2D texture, Vector2Int pos0, Vector2Int pos1, Color color) { // An implementation of Bresenham's line algorithm
 		// DrawAALine(guid, texture, pos0, pos1, color);
 		// return;
@@ -80,10 +92,26 @@ public class GraphSurface : MonoBehaviour
 
 		for (int i = 0; i <= longest; i++) {
 			if (y != Screen.height && y != 0) {
+				// You know what? This is lame. We can do better.
 				for(int c = -(thickness/2); c < thickness/2; c++) {
 					Vector2Int coords = new Vector2Int(x, y + c);
 					SetPixelSafe(guid, coords, color);
 				}
+				// No, we can't.
+				// int xr = 0;
+				// int yr = thickness;
+				// int d = 3 - 2 * thickness;
+				// SetCircle(guid, color, x, y, xr, yr);
+				// while(yr >= xr) {
+				// 	xr++;
+				// 	if(d > 0) {
+				// 		yr--;
+				// 		d += 4 * (xr - yr) + 10;
+				// 	} else {
+				// 		d += 4 * xr + 6;
+				// 	}
+				// 	SetCircle(guid, color, x, y, xr, yr);
+				// }
 			}
 
 			numerator += shortest;

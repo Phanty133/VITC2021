@@ -118,7 +118,9 @@ MonoBehaviour:
   color: {r: 0, g: 0, b: 0, a: 0}
   randomColor: 1
   tier: 0
+  funcDepth: 0
   audioGraphPrefab: {fileID: 4618500369259729691, guid: 59ffa3d80bb167f48af37dd3941db80f, type: 3}
+  minComplexity: 0.1
 --- !u!114 &1798843495967457435
 MonoBehaviour:
   m_ObjectHideFlags: 0
