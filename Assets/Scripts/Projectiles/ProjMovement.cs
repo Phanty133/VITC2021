@@ -19,7 +19,7 @@ public class ProjMovement : MonoBehaviour
 	float surfaceWidth;
 	Graph graphComp;
 	AudioGraph audioGraph;
-	bool graphMuted = false;
+	bool playGraph = true;
 	GameObject audioGraphObj;
 	float halfSurfaceWidth;
 	ProjectileManager projectileManager;
@@ -50,15 +50,15 @@ public class ProjMovement : MonoBehaviour
 
 	public void UnmuteAudioGraph() {
 		audioGraph.Unmute();
-		graphMuted = false;
+		playGraph = true;
 	}
 
 	public void MuteAudioGraph() {
 		audioGraph.Mute();
-		graphMuted = true;
+		playGraph = false;
 	}
 
-	public void InitProjectile(ProjectileManager projMgr, bool muted = false, bool randomOffset = false) {
+	public void InitProjectile(ProjectileManager projMgr, bool play = true, bool randomOffset = false) {
 		projectileManager = projMgr;
 		direction = Random.Range(0, 2) == 0 ? -1 : 1;
 		surfaceWidth = GameObject.FindGameObjectWithTag("GraphSurface").GetComponent<GraphSurface>().surfaceWidth;
@@ -110,7 +110,7 @@ public class ProjMovement : MonoBehaviour
 		Transform audioGraphContainer = GameObject.FindGameObjectWithTag("GraphAudio").transform;
 		audioGraphObj = Instantiate(audioGraphPrefab, new Vector3(), new Quaternion(), audioGraphContainer);
 		audioGraph = audioGraphObj.GetComponent<AudioGraph>();
-		graphMuted = muted;
+		playGraph = play;
 	}
 
 	private void Update()
@@ -120,7 +120,7 @@ public class ProjMovement : MonoBehaviour
 			transform.position = NextPos(speed * Time.deltaTime * direction);
 
 			if (Mathf.Abs(transform.position.x) < halfSurfaceWidth && !audioGraph.playing) {
-				audioGraph.PlayGraph(moveLUT, surfaceWidth / speed, graphMuted);
+				audioGraph.PlayGraph(moveLUT, surfaceWidth / speed, playGraph);
 			} else if (audioGraph.playing) {
 				audioGraph.SetPan(transform.position.x / halfSurfaceWidth);
 			}

@@ -6,6 +6,7 @@ public class ProjectileManager : MonoBehaviour
 {
 	public GameObject projPrefab;
 	public GameObject difficultyManagerObj;
+	public GameObject audioContainer;
 	public float tier = 3;
 	public float funcDepth = 1f;
 	public float spawnRate = 1; // Projectiles per second
@@ -18,20 +19,17 @@ public class ProjectileManager : MonoBehaviour
 
 	private float spawnTime;
 	private float spawnTimer;
-	private bool graphMuted = false;
+	private bool playGraph = true;
 	private DifficultyManager difficultyManager;
 
 	public void OnListenToGraphToggle() {
-		graphMuted = !graphMuted;
+		playGraph = !playGraph;
 
 		for (int i = 0; i < projContainer.transform.childCount; i++) {
 			GameObject child = projContainer.transform.GetChild(i).gameObject;
-
-			if (child.GetComponent<AudioGraph>() == null) continue;
-
 			ProjMovement projMovement = child.GetComponent<ProjMovement>();
 
-			if (!graphMuted) {
+			if (playGraph) {
 				projMovement.UnmuteAudioGraph();
 			} else {
 				projMovement.MuteAudioGraph();
@@ -52,7 +50,7 @@ public class ProjectileManager : MonoBehaviour
 			projMovement.speed = baseSpeed;
 		}
 
-		projMovement.InitProjectile(this, graphMuted, randomOffset);
+		projMovement.InitProjectile(this, playGraph, randomOffset);
 	}
 
 	private void Start() {

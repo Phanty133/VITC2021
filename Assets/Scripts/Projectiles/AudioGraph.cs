@@ -75,7 +75,7 @@ public class AudioGraph : MonoBehaviour
 		return ac;
 	}
 
-	public void PlayGraph(LUT movelut, float moveTime, bool muted = false) {
+	public void PlayGraph(LUT movelut, float moveTime, bool play = true) {
 		playing = true;
 		audioSource = gameObject.GetComponent<AudioSource>();
 		length = moveTime + fadeTime;
@@ -90,16 +90,16 @@ public class AudioGraph : MonoBehaviour
 		audioClip = GenerateClip();
 
 		audioSource.volume = volume;
-		audioSource.mute = muted;
+		audioSource.mute = !play;
 		audioSource.PlayOneShot(audioClip);
 	}
 
 	public void Mute() {
-		audioSource.mute = false;
+		audioSource.mute = true;
 	}
 
 	public void Unmute() {
-		audioSource.mute = true;
+		audioSource.mute = false;
 	}
 
 	public void SetPan(float pan) {
@@ -129,5 +129,13 @@ public class AudioGraph : MonoBehaviour
 
 	private void OnDestroy() {
 		AudioClip.Destroy(audioClip);
+	}
+
+	public void Play() {
+		audioSource.UnPause();
+	}
+
+	public void Pause() {
+		audioSource.Pause();
 	}
 }
