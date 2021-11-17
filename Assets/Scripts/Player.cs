@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering;
 using TMPro;
 
 public class Player : MonoBehaviour
@@ -10,6 +11,8 @@ public class Player : MonoBehaviour
 	public float dashMod = 0.5f;
 	public float maxOffset = 0.5f;
 	public float collisionTime = 0.5f;
+	public AnimationCurve intensityOverTime;
+	public VolumeProfile volumeObj;
 	public GameObject scoreObj;
 	private string lastHeld = "";
 	private float timer = 0f;
@@ -21,11 +24,17 @@ public class Player : MonoBehaviour
 	private Vector2 knockbackPos;
 
 	public void OnProjectileCollision() {
-		Vector2 randVector = new Vector2(Random.Range(-1f, 1f), Random.Range(-1f, 1f));
-		knockbackPos = randVector.normalized * maxOffset;
-		recentCollision = true;
+		// The player jumping around after collision feels very weird
+
+		// Vector2 randVector = new Vector2(Random.Range(-1f, 1f), Random.Range(-1f, 1f));
+		// knockbackPos = randVector.normalized * maxOffset;
+		// recentCollision = true;
+		// collisionTimer = collisionTime;
+		// collisionPoint = transform.position;
+
+		// Instead, let's just fuck up the entire screen :)
 		collisionTimer = collisionTime;
-		collisionPoint = transform.position;
+		recentCollision = true;
 	}
 
 	void FollowCursor(Vector2? offset = null) {
@@ -52,12 +61,19 @@ public class Player : MonoBehaviour
 	void Update()
 	{
 		if (recentCollision) {
-			if (Vector2.Distance(transform.position, collisionPoint) > maxOffset * 1.25f) { // If the player has moved their mouse, remove offset
-				recentCollision = false;
-				curOffset = new Vector2(0, 0);
-			} else {
+			// if (Vector2.Distance(transform.position, collisionPoint) > maxOffset * 1.25f) { // If the player has moved their mouse, remove offset
+			// 	recentCollision = false;
+			// 	curOffset = new Vector2(0, 0);
+			// } else {
+			// 	collisionTimer -= Time.deltaTime;
+			// 	curOffset = Vector2.Lerp(new Vector2(0, 0), knockbackPos, collisionTimer / collisionTime);
+			// }
+			if (collisionTimer > 0) {
 				collisionTimer -= Time.deltaTime;
-				curOffset = Vector2.Lerp(new Vector2(0, 0), knockbackPos, collisionTimer / collisionTime);
+				DamageEffect damageEffect;
+				if(volumeObj.TryGet(out damageEffect)) damageEffect.intensity.value = intensityOverTime.Evaluate(collisionTimer / collisionTime);
+			} else {
+				recentCollision = false;
 			}
 		}
 

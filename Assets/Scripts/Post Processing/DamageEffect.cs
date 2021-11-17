@@ -12,6 +12,8 @@ public class DamageEffect : VolumeComponent
 {
 	[Tooltip("Intensity of the effect.")]
 	public ClampedFloatParameter intensity = new ClampedFloatParameter(0, 0, 1);
+	[Tooltip("Hue shift of the effect.")]
+	public ClampedFloatParameter shift = new ClampedFloatParameter(0, -360, 360);
 }
 
 [CustomPostProcess("Damage", CustomPostProcessInjectionPoint.BeforePostProcess), Preserve]
@@ -24,7 +26,8 @@ public class DamageEffectRenderer : CustomPostProcessRenderer
 	static class ShaderIDs
 	{
 		internal readonly static int Input = Shader.PropertyToID("_MainTex");
-		internal readonly static int Intensity = Shader.PropertyToID("_intensity");
+		internal readonly static int Intensity = Shader.PropertyToID("_Intensity");
+		internal readonly static int Shift = Shader.PropertyToID("_Shift");
 	}
 
 	public override bool visibleInSceneView => true;
@@ -51,6 +54,7 @@ public class DamageEffectRenderer : CustomPostProcessRenderer
 		if (m_Material != null)
 		{
 			m_Material.SetFloat(ShaderIDs.Intensity, m_VolumeComponent.intensity.value);
+			m_Material.SetFloat(ShaderIDs.Shift, m_VolumeComponent.shift.value);
 		}
 		cmd.SetGlobalTexture(ShaderIDs.Input, source);
 		CoreUtils.DrawFullScreen(cmd, m_Material, destination);

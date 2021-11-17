@@ -16,9 +16,33 @@ MonoBehaviour:
   m_AdvancedMode: 0
   intensity:
     m_OverrideState: 1
+    m_Value: 1
+    min: 0
+    max: 1
+--- !u!114 &-2052376266055073508
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7debb2239bfe3ce97ab87c7dfe20f7b4, type: 3}
+  m_Name: DamageEffect
+  m_EditorClassIdentifier: 
+  active: 1
+  m_AdvancedMode: 0
+  intensity:
+    m_OverrideState: 1
     m_Value: 0
     min: 0
     max: 1
+  shift:
+    m_OverrideState: 1
+    m_Value: -120
+    min: -360
+    max: 360
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -33,7 +57,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   components:
   - {fileID: 8615073428457626}
-  - {fileID: -5453151635897189980}
+  - {fileID: -2052376266055073508}
 --- !u!114 &8615073428457626
 MonoBehaviour:
   m_ObjectHideFlags: 3
