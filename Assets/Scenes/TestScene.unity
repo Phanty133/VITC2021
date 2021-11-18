@@ -829,6 +829,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   projPrefab: {fileID: 1798843495967457434, guid: 127ac891e89040243a0cc24e358d6a22, type: 3}
   difficultyManagerObj: {fileID: 1500591205}
+  audioContainer: {fileID: 0}
   tier: 3
   funcDepth: 3
   spawnRate: 0.1
@@ -1032,6 +1033,8 @@ MonoBehaviour:
   dashMod: 0.5
   maxOffset: 1
   collisionTime: 1
+  maxLives: 5
+  scoreGoal: 2500
   intensityOverTime:
     serializedVersion: 2
     m_Curve:
@@ -2495,19 +2498,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0d437d1a2adff9749944dc9be6496e60, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  disable: 1
+  disable: 0
   projectileManagerObj: {fileID: 391449160}
   playerObj: {fileID: 665881528}
   speedScaling: 100
-  baseSpeed: 2
-  maxSpeed: 5
+  baseSpeed: 4
+  maxSpeed: 10
   tierScaling: 50
   maxTier: 3
   depthScaling: 50
   baseDepth: 1
   maxDepth: 4
-  spawnScaling: 10
-  baseSpawnRate: 0.1
+  spawnScaling: 200
+  baseSpawnRate: 0.5
   maxSpawnRate: 3
 --- !u!1 &1568293259
 GameObject:

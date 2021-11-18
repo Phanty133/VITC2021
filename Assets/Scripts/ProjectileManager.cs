@@ -63,6 +63,9 @@ public class ProjectileManager : MonoBehaviour
 
 	private void Update() {
 		spawnTimer -= Time.deltaTime;
+		
+		spawnTime = 1 / spawnRate;
+		if(spawnTimer > spawnTime) spawnTimer = spawnTime;
 
 		if (spawnTimer <= 0) {
 			SpawnProjectile();

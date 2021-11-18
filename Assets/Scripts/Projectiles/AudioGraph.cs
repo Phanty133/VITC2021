@@ -2,11 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(AudioLowPassFilter))]
 public class AudioGraph : MonoBehaviour
 {
 	public int baseFreq = 1000;
 	public int freqOffsetPerUnit = 40;
-	public int samplerate = 44100;
+	public int samplerate = 8000;
 	public float fadeTime = 1f;
 	private AudioSource audioSource;
 	private float length;
@@ -20,20 +21,25 @@ public class AudioGraph : MonoBehaviour
 	private bool fadeActive = false;
 	private float fadeTimer;
 	private float volume;
+	private AudioLowPassFilter lowPassFilter;
 
-	private static float RangeToNeg1To1(float value, float min, float max) {
+	private static float RangeToNeg1To1(float value, float min, float max)
+	{
 		float clamped = Mathf.Clamp(value, min, max);
 		float zeroToOne = (clamped - min) / (max - min);
 
 		return 2 * zeroToOne - 1;
 	}
 
-	private void OnAudioRead(float[] data) {
+	private void OnAudioFilterRead(float[] data, int channels)
+	{
+		if (lut == null) return;
 		curReadPosition += data.Length;
 
 		float preCalc1 = surfaceWidth / (length - fadeTime);
 
-		for (int i = 0; i < data.Length; i++) {
+		for (int i = 0; i < data.Length; i++)
+		{
 			int curSample = curReadPosition + i;
 
 			float curClipTime = curSample / (float)samplerate;
@@ -50,32 +56,42 @@ public class AudioGraph : MonoBehaviour
 			// }
 
 			int freqOffset = Mathf.RoundToInt(RangeToNeg1To1(y, -10, 10) * 500);
-			
+
 			int freq = baseFreq + freqOffset;
 			int funcX = (freq * curSample) / samplerate;
 			float raw = lut.m_func.Process(funcX);
 
-			if (float.IsNaN(raw)) {
+			if (float.IsNaN(raw))
+			{
 				raw = 0;
 			}
 
 			float scaled = RangeToNeg1To1(raw, -10, 10);
 
 			data[i] = scaled;
+
+			if (channels == 2)
+			{
+				data[i + 1] = data[i];
+				i++;
+			}
 		}
 	}
 
-	private void OnAudioSetPosition(int newPosition) {
+	private void OnAudioSetPosition(int newPosition)
+	{
 		curReadPosition = newPosition;
 	}
 
-	private AudioClip GenerateClip() {
-		AudioClip ac = AudioClip.Create("wave", Mathf.RoundToInt(samplerate * length), 1, samplerate, true, OnAudioRead, OnAudioSetPosition);
+	// private AudioClip GenerateClip()
+	// {
+	// 	AudioClip ac = AudioClip.Create("wave", Mathf.RoundToInt(samplerate * length), 1, samplerate, true, OnAudioRead, OnAudioSetPosition);
 
-		return ac;
-	}
+	// 	return ac;
+	// }
 
-	public void PlayGraph(LUT movelut, float moveTime, bool play = true) {
+	public void PlayGraph(LUT movelut, float moveTime, bool play = true)
+	{
 		playing = true;
 		audioSource = gameObject.GetComponent<AudioSource>();
 		length = moveTime + fadeTime;
@@ -87,55 +103,69 @@ public class AudioGraph : MonoBehaviour
 
 		float offset = 0;
 		int freq = Mathf.RoundToInt(baseFreq + offset * freqOffsetPerUnit);
-		audioClip = GenerateClip();
+		// audioClip = GenerateClip();
 
 		audioSource.volume = volume;
 		audioSource.mute = !play;
-		audioSource.PlayOneShot(audioClip);
+		// audioSource.PlayOneShot(audioClip);
 	}
 
-	public void Mute() {
+	public void Mute()
+	{
 		audioSource.mute = true;
 	}
 
-	public void Unmute() {
+	public void Unmute()
+	{
 		audioSource.mute = false;
 	}
 
-	public void SetPan(float pan) {
+	public void SetPan(float pan)
+	{
 		audioSource.panStereo = pan;
 	}
 
-	public void Fade() {
+	public void Fade()
+	{
 		fadeTimer = fadeTime;
 		fadeActive = true;
 	}
 
-	private void Awake() {
+	private void Awake()
+	{
+		lowPassFilter = GetComponent<AudioLowPassFilter>();
 		volume = transform.parent.GetComponent<AudioGraphContainer>().volume;
 	}
 
-	private void FixedUpdate() {
-		if (fadeActive) {
+	private void FixedUpdate()
+	{
+		if (fadeActive)
+		{
 			fadeTimer -= Time.fixedDeltaTime;
 
-			if (fadeTimer <= 0) {
+			if (fadeTimer <= 0)
+			{
 				Destroy(gameObject);
-			} else {
+			}
+			else
+			{
 				audioSource.volume = volume * (fadeTimer / fadeTime);
 			}
 		}
 	}
 
-	private void OnDestroy() {
-		AudioClip.Destroy(audioClip);
+	private void OnDestroy()
+	{
+		// AudioClip.Destroy(audioClip);
 	}
 
-	public void Play() {
+	public void Play()
+	{
 		audioSource.UnPause();
 	}
 
-	public void Pause() {
+	public void Pause()
+	{
 		audioSource.Pause();
 	}
 }

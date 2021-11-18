@@ -6,11 +6,14 @@ using TMPro;
 
 public class Player : MonoBehaviour
 {
+	[HideInInspector]
 	public float score = 0f;
 	public float speed = 100f;
 	public float dashMod = 0.5f;
 	public float maxOffset = 0.5f;
 	public float collisionTime = 0.5f;
+	public int maxLives = 5;
+	public float scoreGoal = 10f;
 	public AnimationCurve intensityOverTime;
 	public VolumeProfile volumeObj;
 	public GameObject scoreObj;
@@ -19,6 +22,8 @@ public class Player : MonoBehaviour
 	private bool held = false;
 	private Vector2 curOffset;
 	private bool recentCollision = false;
+	private int lives = 0;
+	private float nextGoal = 0f;
 	private float collisionTimer;
 	private Vector2 collisionPoint;
 	private Vector2 knockbackPos;
@@ -35,6 +40,7 @@ public class Player : MonoBehaviour
 		// Instead, let's just fuck up the entire screen :)
 		collisionTimer = collisionTime;
 		recentCollision = true;
+		lives--;
 	}
 
 	void FollowCursor(Vector2? offset = null) {
@@ -57,6 +63,15 @@ public class Player : MonoBehaviour
 		transform.position = poser;
 	}
 
+	void LoseGame() {
+		Debug.Log("YOU DA LOSER YOU DA LOSER YOU DA LOSER");
+	}
+
+	void Start() {
+		lives = maxLives;
+		nextGoal = scoreGoal;
+	}
+
 	// Update is called once per frame
 	void Update()
 	{
@@ -75,6 +90,17 @@ public class Player : MonoBehaviour
 			} else {
 				recentCollision = false;
 			}
+		}
+
+		if(score >= nextGoal / 10f) {
+			if(lives < maxLives) {
+				lives++;
+			}
+			nextGoal += scoreGoal;
+		} 
+
+		if(lives == 0) {
+			LoseGame();
 		}
 
 		score += Time.deltaTime;
