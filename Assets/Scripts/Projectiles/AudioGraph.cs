@@ -7,7 +7,7 @@ public class AudioGraph : MonoBehaviour
 {
 	public int baseFreq = 1000;
 	public int freqOffsetPerUnit = 40;
-	public int samplerate = 8000;
+	public int samplerate = 44100;
 	public float fadeTime = 1f;
 	private AudioSource audioSource;
 	private float length;
@@ -133,6 +133,8 @@ public class AudioGraph : MonoBehaviour
 
 	private void Awake()
 	{
+		samplerate = AudioSettings.outputSampleRate;
+
 		lowPassFilter = GetComponent<AudioLowPassFilter>();
 		volume = transform.parent.GetComponent<AudioGraphContainer>().volume;
 	}
