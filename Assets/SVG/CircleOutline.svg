@@ -25,7 +25,7 @@
      showgrid="false"
      width="400mm"
      inkscape:zoom="0.36569515"
-     inkscape:cx="391.03609"
+     inkscape:cx="389.66883"
      inkscape:cy="615.26657"
      inkscape:window-width="1920"
      inkscape:window-height="1007"
@@ -40,7 +40,7 @@
      inkscape:groupmode="layer"
      id="layer1">
     <circle
-       style="fill:none;stroke:#fffffe;stroke-width:2.64583333;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:none"
+       style="fill:none;stroke:#000000;stroke-width:10;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:none"
        id="path846"
        cx="200"
        cy="200"

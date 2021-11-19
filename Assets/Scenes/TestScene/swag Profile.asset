@@ -40,7 +40,7 @@ MonoBehaviour:
     max: 1
   shift:
     m_OverrideState: 1
-    m_Value: -120
+    m_Value: -160
     min: -360
     max: 360
 --- !u!114 &11400000
