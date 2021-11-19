@@ -1633,7 +1633,7 @@ MonoBehaviour:
   collisionTime: 1
   maxLives: 5
   retardedMultiplier: 10
-  scoreGoal: 2500
+  scoreGoal: 1000
   intensityOverTime:
     serializedVersion: 2
     m_Curve:
