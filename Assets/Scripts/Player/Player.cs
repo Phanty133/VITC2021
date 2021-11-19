@@ -23,7 +23,8 @@ public class Player : MonoBehaviour
 	private bool held = false;
 	private Vector2 curOffset;
 	private bool recentCollision = false;
-	private int lives = 0;
+	[HideInInspector]
+	public int lives = 0;
 	private float nextGoal = 0f;
 	private float collisionTimer;
 	private Vector2 collisionPoint;

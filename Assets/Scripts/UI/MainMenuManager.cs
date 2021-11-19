@@ -9,9 +9,11 @@ public class MainMenuManager : MonoBehaviour
 	public GameObject optionsMenu;
 	public GameObject diffMenu;
 	public GameObject scoreBoardMenu;
+	public GameObject tutorialMenu;
 
 	public void OpenDifficultySelect() {
 		mainMenu.SetActive(false);
+		tutorialMenu.SetActive(false);
 		diffMenu.SetActive(true);
 	}
 
@@ -48,11 +50,18 @@ public class MainMenuManager : MonoBehaviour
 		diffMenu.SetActive(false);
 		optionsMenu.SetActive(false);
 		scoreBoardMenu.SetActive(false);
+		tutorialMenu.SetActive(false);
 	}
 
 	public void OpenHighScoreMenu() {
 		mainMenu.SetActive(false);
 		scoreBoardMenu.SetActive(true);
+	}
+
+	public void OpenTutorialMenu()
+	{
+		mainMenu.SetActive(false);
+		tutorialMenu.SetActive(true);
 	}
 
 	private void Awake() {
