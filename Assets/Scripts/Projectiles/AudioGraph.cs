@@ -114,12 +114,12 @@ public class AudioGraph : MonoBehaviour
 
 	public void Mute()
 	{
-		audioSource.mute = true;
+		if (audioSource) audioSource.mute = true;
 	}
 
 	public void Unmute()
 	{
-		audioSource.mute = false;
+		if (audioSource) audioSource.mute = false;
 	}
 
 	public void SetPan(float pan)
@@ -165,12 +165,12 @@ public class AudioGraph : MonoBehaviour
 
 	public void Play()
 	{
-		audioSource.UnPause();
+		if (audioSource) audioSource.UnPause();
 	}
 
 	public void Pause()
 	{
-		audioSource.Pause();
+		if (audioSource) audioSource.Pause();
 	}
 
 	public void SetVolume(float newVol) {
