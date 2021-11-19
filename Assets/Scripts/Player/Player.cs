@@ -13,6 +13,7 @@ public class Player : MonoBehaviour
 	public float maxOffset = 0.5f;
 	public float collisionTime = 0.5f;
 	public int maxLives = 5;
+	public int retardedMultiplier = 10;
 	public float scoreGoal = 10f;
 	public AnimationCurve intensityOverTime;
 	public VolumeProfile volumeObj;
@@ -27,6 +28,11 @@ public class Player : MonoBehaviour
 	private float collisionTimer;
 	private Vector2 collisionPoint;
 	private Vector2 knockbackPos;
+	private GameManager gameManager;
+
+	public int ScoreInt {
+		get { return Mathf.RoundToInt(score * retardedMultiplier); }
+	}
 
 	public void OnProjectileCollision() {
 		// The player jumping around after collision feels very weird
@@ -53,7 +59,7 @@ public class Player : MonoBehaviour
 	}
 
 	void UpdateScore() {
-		scoreObj.GetComponent<TextMeshProUGUI>().text = Mathf.Floor(score * 10f).ToString();
+		scoreObj.GetComponent<TextMeshProUGUI>().text = Mathf.Floor(score * retardedMultiplier).ToString();
 	}
 
 	void ClampPosition() {
@@ -64,12 +70,18 @@ public class Player : MonoBehaviour
 	}
 
 	void LoseGame() {
-		Debug.Log("YOU DA LOSER YOU DA LOSER YOU DA LOSER");
+		gameManager.LoseGame();
 	}
 
 	void Start() {
 		lives = maxLives;
 		nextGoal = scoreGoal;
+		gameManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
+	}
+
+	public void ResetPlayer() {
+		lives = maxLives;
+		score = 0;
 	}
 
 	// Update is called once per frame
@@ -91,6 +103,8 @@ public class Player : MonoBehaviour
 				recentCollision = false;
 			}
 		}
+
+		if (!gameManager.GameActive) return;
 
 		if(score >= nextGoal / 10f) {
 			if(lives < maxLives) {

@@ -41,7 +41,7 @@ public class AudioGraph : MonoBehaviour
 		for (int i = 0; i < data.Length; i++)
 		{
 			int curSample = curReadPosition + i;
-			float curClipTime = curSample / (float)samplerate / 2f;
+			float curClipTime = curSample / (float)samplerate / channels;
 
 			curUnit = curClipTime * preCalc1 - halfSurfaceWidth;
 

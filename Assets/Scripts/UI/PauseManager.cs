@@ -7,8 +7,12 @@ public class PauseManager : MonoBehaviour
 {
 	public GameObject pauseMenu;
 	public GameObject audioContainer;
+	
+	private GameManager gameManager;
 
 	public void OpenPauseMenu() {
+		if (!gameManager.GameActive) return;
+
 		Pause();
 		pauseMenu.SetActive(true);
 	}
@@ -42,5 +46,9 @@ public class PauseManager : MonoBehaviour
 		if (!Application.isEditor) {
 			Application.Quit();
 		}
+	}
+
+	private void Start() {
+		gameManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
 	}
 }

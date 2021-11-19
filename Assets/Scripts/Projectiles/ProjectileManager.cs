@@ -7,6 +7,7 @@ public class ProjectileManager : MonoBehaviour
 	public GameObject projPrefab;
 	public GameObject difficultyManagerObj;
 	public GameObject audioContainer;
+	public bool spawn = false;
 	public float tier = 3;
 	public float funcDepth = 1f;
 	public float spawnRate = 1; // Projectiles per second
@@ -53,27 +54,45 @@ public class ProjectileManager : MonoBehaviour
 		projMovement.InitProjectile(this, playGraph, randomOffset);
 	}
 
-	private void Start() {
-		if(!mainMenuMode) difficultyManager = difficultyManagerObj.GetComponent<DifficultyManager>();
+	public void StartSpawning() {
+		spawn = true;
 
 		spawnTime = 1 / spawnRate;
 		spawnTimer = spawnTime;
 		SpawnProjectile();
 	}
 
-	private void Update() {
-		spawnTimer -= Time.deltaTime;
-		
-		spawnTime = 1 / spawnRate;
-		if(spawnTimer > spawnTime) spawnTimer = spawnTime;
+	public void StopSpawning() {
+		spawn = false;
+	}
 
-		if (spawnTimer <= 0) {
-			SpawnProjectile();
-			spawnTimer = spawnTime;
+	private void Start() {
+		if(!mainMenuMode) difficultyManager = difficultyManagerObj.GetComponent<DifficultyManager>();
+
+		// StartSpawning();
+	}
+
+	private void Update() {
+		if (spawn) {
+			spawnTimer -= Time.deltaTime;
+		
+			spawnTime = 1 / spawnRate;
+			if(spawnTimer > spawnTime) spawnTimer = spawnTime;
+
+			if (spawnTimer <= 0) {
+				SpawnProjectile();
+				spawnTimer = spawnTime;
+			}
 		}
 	}
 
 	public void OnProjectileDestroy() {
 		if (!mainMenuMode) difficultyManager.UpdateValues();
+	}
+
+	public void ClearProjectiles() {
+		for (int i = 0; i < projContainer.transform.childCount; i++) {
+			Destroy(projContainer.transform.GetChild(i).gameObject);
+		}
 	}
 }
