@@ -12,5 +12,6 @@ public class FuncEntry : MonoBehaviour
 
 		colorImg.color = color;
 		text.text = "y = " + function.GetNotation();
+		// text.text = text.text.Replace(" ", "");
 	}
 }
