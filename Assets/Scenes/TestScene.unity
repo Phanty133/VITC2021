@@ -937,7 +937,7 @@ SpriteRenderer:
   m_SortingLayerID: 981091769
   m_SortingLayer: -3
   m_SortingOrder: 0
-  m_Sprite: {fileID: 3286163911610860551, guid: 18465ddb4712693468ac55ea561f14c3, type: 3}
+  m_Sprite: {fileID: 3286163911610860551, guid: c4b3ae000b288c9dfbc38e9272294199, type: 3}
   m_Color: {r: 0, g: 0, b: 0, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -1348,7 +1348,7 @@ Transform:
   m_GameObject: {fileID: 537042860}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 100, y: 100, z: 1}
+  m_LocalScale: {x: 0.07, y: 0.05, z: 1}
   m_Children: []
   m_Father: {fileID: 856436735}
   m_RootOrder: 1
@@ -1393,8 +1393,8 @@ SpriteRenderer:
   m_SortingLayerID: 981091769
   m_SortingLayer: -3
   m_SortingOrder: -1
-  m_Sprite: {fileID: 7482667652216324306, guid: 48e93eef0688c4a259cb0eddcd8661f7, type: 3}
-  m_Color: {r: 0, g: 0, b: 0, a: 1}
+  m_Sprite: {fileID: 21300000, guid: 573f14601035fcaea9d549d43158f719, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -1700,7 +1700,7 @@ SpriteRenderer:
   m_SortingLayer: -1
   m_SortingOrder: 0
   m_Sprite: {fileID: -2413806693520163455, guid: ebe73ca9363db456bacf42c025bb4847, type: 3}
-  m_Color: {r: 0.49803925, g: 0.49411768, b: 1, a: 1}
+  m_Color: {r: 0.7921569, g: 0.98039216, b: 0.91764706, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -4870,15 +4870,15 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 0}
+  m_audioClip: {fileID: 8300000, guid: 414cae37132b4e97f949bf5f35f78a33, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
-  Loop: 0
+  Loop: 1
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
-  Priority: 128
+  Priority: 0
   DopplerLevel: 1
   MinDistance: 1
   MaxDistance: 500
