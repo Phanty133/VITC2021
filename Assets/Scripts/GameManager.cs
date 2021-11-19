@@ -25,7 +25,12 @@ public class GameManager : MonoBehaviour
 	{
 		// FunctionGenerator funcGen = new FunctionGenerator();
 		bgMusicObj.GetComponent<AudioSource>().volume = PlayerPrefs.GetFloat("volume_music", 0.5f);
-		graphContainerObj.GetComponent<AudioGraphContainer>().SetVolume(PlayerPrefs.GetFloat("volume_sfx", 0.3f));
+
+		float sfxVolume = PlayerPrefs.GetFloat("volume_sfx", 0.3f);
+
+		if (isMainMenu) sfxVolume /= 2f;
+
+		graphContainerObj.GetComponent<AudioGraphContainer>().SetVolume(sfxVolume);
 
 		if (!isMainMenu) {
 			loseMenuManager = loseMenuMngrObj.GetComponent<LoseMenuManager>();
