@@ -89,10 +89,6 @@ public class ProceduralAudio : MonoBehaviour
 
 
 		}
-
-
-
-
 	}
 
 	void Update()
