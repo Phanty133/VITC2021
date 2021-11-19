@@ -28,7 +28,7 @@ public class GameManager : MonoBehaviour
 
 		float sfxVolume = PlayerPrefs.GetFloat("volume_sfx", 0.3f);
 
-		if (isMainMenu) sfxVolume /= 2f;
+		if (isMainMenu) sfxVolume /= 15f;
 
 		graphContainerObj.GetComponent<AudioGraphContainer>().SetVolume(sfxVolume);
 
