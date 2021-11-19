@@ -2498,7 +2498,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0d437d1a2adff9749944dc9be6496e60, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  disable: 0
+  disable: 1
   projectileManagerObj: {fileID: 391449160}
   playerObj: {fileID: 665881528}
   speedScaling: 100

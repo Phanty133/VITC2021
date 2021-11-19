@@ -13,7 +13,7 @@ public class AudioGraph : MonoBehaviour
 	private float length;
 	private LUT lut;
 	private float surfaceWidth;
-	private int curReadPosition;
+	private int curReadPosition = 0;
 	public bool playing = false;
 	private AudioClip audioClip;
 	private float halfSurfaceWidth;
@@ -34,16 +34,16 @@ public class AudioGraph : MonoBehaviour
 	private void OnAudioFilterRead(float[] data, int channels)
 	{
 		if (lut == null) return;
-		curReadPosition += data.Length;
 
 		float preCalc1 = surfaceWidth / (length - fadeTime);
+		float curUnit = Mathf.Infinity;
 
 		for (int i = 0; i < data.Length; i++)
 		{
 			int curSample = curReadPosition + i;
+			float curClipTime = curSample / (float)samplerate / 2f;
 
-			float curClipTime = curSample / (float)samplerate;
-			float curUnit = curClipTime * preCalc1 - halfSurfaceWidth;
+			curUnit = curClipTime * preCalc1 - halfSurfaceWidth;
 
 			float y;
 
@@ -76,12 +76,14 @@ public class AudioGraph : MonoBehaviour
 				i++;
 			}
 		}
+
+		curReadPosition += data.Length;
 	}
 
-	private void OnAudioSetPosition(int newPosition)
-	{
-		curReadPosition = newPosition;
-	}
+	// private void OnAudioSetPosition(int newPosition)
+	// {
+	// 	curReadPosition = newPosition;
+	// }
 
 	// private AudioClip GenerateClip()
 	// {
@@ -167,5 +169,10 @@ public class AudioGraph : MonoBehaviour
 	public void Pause()
 	{
 		audioSource.Pause();
+	}
+
+	public void SetVolume(float newVol) {
+		volume = newVol;
+		audioSource.volume = newVol; 
 	}
 }

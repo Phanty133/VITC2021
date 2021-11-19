@@ -46,9 +46,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   baseFreq: 1000
   freqOffsetPerUnit: 40
-  samplerate: 44100
+  samplerate: 48000
   fadeTime: 2
-  volume: 0.3
   playing: 0
 --- !u!82 &-2578025242218116869
 AudioSource:
