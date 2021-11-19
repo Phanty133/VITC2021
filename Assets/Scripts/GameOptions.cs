@@ -10,5 +10,5 @@ public enum Difficulty {
 
 public static class GameOptions
 {
-	public static Difficulty difficulty;
+	public static Difficulty difficulty = Difficulty.Easy;
 }

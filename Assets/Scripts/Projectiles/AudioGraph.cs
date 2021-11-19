@@ -175,6 +175,6 @@ public class AudioGraph : MonoBehaviour
 
 	public void SetVolume(float newVol) {
 		volume = newVol;
-		audioSource.volume = newVol; 
+		if (audioSource) audioSource.volume = newVol;
 	}
 }
