@@ -8,6 +8,7 @@ public class AudioGraph : MonoBehaviour
 	public int baseFreq = 1000;
 	public int freqOffsetPerUnit = 40;
 	public int samplerate = 44100;
+	public int clipSamplerate = 8000;
 	public float fadeTime = 1f;
 	private AudioSource audioSource;
 	private float length;
@@ -34,6 +35,7 @@ public class AudioGraph : MonoBehaviour
 	private void OnAudioFilterRead(float[] data, int channels)
 	{
 		if (lut == null) return;
+		if (Application.platform == RuntimePlatform.WebGLPlayer) return;
 
 		float preCalc1 = surfaceWidth / (length - fadeTime);
 		float curUnit = Mathf.Infinity;
@@ -80,17 +82,60 @@ public class AudioGraph : MonoBehaviour
 		curReadPosition += data.Length;
 	}
 
-	// private void OnAudioSetPosition(int newPosition)
-	// {
-	// 	curReadPosition = newPosition;
-	// }
+	private void OnAudioRead(float[] data)
+	{
+		if (lut == null) return;
 
-	// private AudioClip GenerateClip()
-	// {
-	// 	AudioClip ac = AudioClip.Create("wave", Mathf.RoundToInt(samplerate * length), 1, samplerate, true, OnAudioRead, OnAudioSetPosition);
+		float preCalc1 = surfaceWidth / (length - fadeTime);
+		float curUnit = Mathf.Infinity;
 
-	// 	return ac;
-	// }
+		for (int i = 0; i < data.Length; i++)
+		{
+			int curSample = curReadPosition + i;
+			float curClipTime = curSample / (float)clipSamplerate;
+
+			curUnit = curClipTime * preCalc1 - halfSurfaceWidth;
+
+			float y;
+
+			y = lut.ValueAt(Mathf.Clamp(curUnit, -halfSurfaceWidth, halfSurfaceWidth));
+
+			// if (funcComplex) {
+			// 	y = lut.ValueAt(curUnit);
+			// } else {
+			// 	y = lut.m_func.Process(curUnit);
+			// }
+
+			int freqOffset = Mathf.RoundToInt(RangeToNeg1To1(y, -10, 10) * 500);
+
+			int freq = baseFreq + freqOffset;
+			int funcX = (freq * curSample) / clipSamplerate;
+			float raw = lut.m_func.Process(funcX);
+
+			if (float.IsNaN(raw))
+			{
+				raw = 0;
+			}
+
+			float scaled = RangeToNeg1To1(raw, -10, 10);
+
+			data[i] = scaled;
+		}
+
+		curReadPosition += data.Length;
+	}
+
+	private void OnAudioSetPosition(int newPosition)
+	{
+		curReadPosition = newPosition;
+	}
+
+	private AudioClip GenerateClip()
+	{
+		AudioClip ac = AudioClip.Create("wave", Mathf.RoundToInt(clipSamplerate * length), 1, clipSamplerate, false, OnAudioRead, OnAudioSetPosition);
+
+		return ac;
+	}
 
 	public void PlayGraph(LUT movelut, float moveTime, bool play = true)
 	{
@@ -105,11 +150,14 @@ public class AudioGraph : MonoBehaviour
 
 		float offset = 0;
 		int freq = Mathf.RoundToInt(baseFreq + offset * freqOffsetPerUnit);
-		// audioClip = GenerateClip();
+
+		if (Application.platform == RuntimePlatform.WebGLPlayer) {
+			audioClip = GenerateClip();
+			audioSource.PlayOneShot(audioClip);
+		}
 
 		audioSource.volume = volume;
 		audioSource.mute = !play;
-		// audioSource.PlayOneShot(audioClip);
 	}
 
 	public void Mute()

@@ -22,6 +22,9 @@ public class OptionsManager : MonoBehaviour
 
 		musicSlider.onValueChanged.AddListener(OnMusicVolumeChange);
 		sfxSlider.onValueChanged.AddListener(OnSFXVolumeChange);
+
+		musicSlider.value = PlayerPrefs.GetFloat("volume_music", 0.5f);
+		sfxSlider.value = PlayerPrefs.GetFloat("volume_sfx", 0.3f);
 	}
 
 	public void OnMusicVolumeChange(float newVal) {

@@ -101,7 +101,7 @@ public class DifficultyManager : MonoBehaviour
 			Start();
 		}
 
-		float clampedScore = Mathf.Clamp(player.ScoreInt, 0, Mathf.Infinity);
+		float clampedScore = Mathf.Clamp(player.score, 0, Mathf.Infinity);
 
 		projectileManager.baseSpeed = CalcSpeed(clampedScore);
 		projectileManager.spawnRate = CalcSpawnRate(clampedScore);
